@@ -2,7 +2,12 @@
   "compilerOptions": {
     "baseUrl": "src",
     "paths": {
-      "@/*": ["*"]
+      "@/*": [
+        "*"
+      ],
+      "@/assets": [
+        "*/../"
+      ]
     },
     "target": "ESNext",
     "lib": [
