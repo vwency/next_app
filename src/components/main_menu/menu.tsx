@@ -2,7 +2,7 @@ import React from "react";
 import '@/styles/menu/index.scss';
 
 const menuContent = (
-    <div className="menu_wrapper">
+    <div className="menu_wrapper no-select">
         <div className="menu__logo">
             <div className="menu__logo__text">
                 Serendale
