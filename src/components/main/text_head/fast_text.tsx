@@ -1,9 +1,9 @@
 import React from "react";
-import '@/styles/menu/index.scss';
+import '@/styles/mainlayout/text_head/index.scss';
 
 const fastTextContent = (
-    <div className="no-select">
-        qwewqe
+    <div className="no-select fast_text">
+        A Fast Blockchain.
     </div>
 );
 
