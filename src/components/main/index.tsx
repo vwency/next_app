@@ -1,16 +1,15 @@
-
-import React from "react";
-import '@/styles/menu/index.scss';
-import MainTextHead from "./text_head/main";
+import React from 'react'
+import '@/styles/menu/index.scss'
+import MainTextHead from './text_head/main'
 
 const MainContent = (
-    <div>
-        <MainTextHead />
-    </div>
-);
+  <div>
+    <MainTextHead />
+  </div>
+)
 
 const MainLayout = () => {
-    return <>{MainContent}</>;
-};
+  return <>{MainContent}</>
+}
 
-export default MainLayout;
+export default MainLayout

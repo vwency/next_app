@@ -1,18 +1,15 @@
-
-
-import React from "react";
-import '@/styles/menu/index.scss';
-import MainMenu from "./main_menu/menu";
-
+import React from 'react'
+import '@/styles/menu/index.scss'
+import MainMenu from './menu/menu'
 
 const HeaderContent = (
-    <div>
-        <MainMenu />
-    </div>
-);
+  <div>
+    <MainMenu />
+  </div>
+)
 
 const HeaderLayout = () => {
-    return <>{HeaderContent}</>;
-};
+  return <>{HeaderContent}</>
+}
 
-export default HeaderLayout;
+export default HeaderLayout

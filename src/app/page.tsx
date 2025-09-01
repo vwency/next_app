@@ -1,5 +1,5 @@
 import MainLayout from '@/components/main';
-import MainMenu from '../components/header/main_menu/menu';
+import MainMenu from '../components/header/menu/menu';
 import '@/styles/global/index.scss'
 
 export default function Home() {
