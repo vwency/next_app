@@ -1,3 +1,10 @@
+import MainMenu from '../components/main_menu/menu';
+import '@/styles/main/index.scss'
+
 export default function Home() {
-  return <h1>Hello Next.js!</h1>;
+  return (
+    <div>
+      <MainMenu />
+    </div>
+  );
 }

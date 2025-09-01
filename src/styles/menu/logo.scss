@@ -1,0 +1,16 @@
+.menu__logo {
+    text-align: center;
+    box-sizing: border-box;
+    flex-direction: column;
+    justify-content: center;
+    justify-items: center;
+    display: flex;
+    &__text {
+        color: #fff;
+        font-family: Chillax;
+        font-size: 1.5rem;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+    }
+}

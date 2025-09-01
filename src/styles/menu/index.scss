@@ -1,0 +1,11 @@
+@import './logo.scss';
+@import './options.scss';
+@import './referral.scss';
+
+.menu_wrapper {
+  margin-top: 3vh;
+  justify-content: space-around;
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+}
