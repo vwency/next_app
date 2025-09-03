@@ -1,3 +1,4 @@
+import { defineConfig } from 'eslint/config'
 import js from '@eslint/js'
 import globals from 'globals'
 import eslintReact from 'eslint-plugin-react'
@@ -8,18 +9,26 @@ import tseslint from 'typescript-eslint'
 import eslintConfigPrettier from 'eslint-config-prettier'
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 
-export default tseslint.config(
+export default defineConfig([
+  js.configs.recommended,
+  ...tseslint.configs.recommended,
+  eslintConfigPrettier,
   eslintPluginPrettierRecommended,
-
   {
-    settings: {
-      react: {
-        version: 'detect',
-      },
-    },
+    ignores: [
+      'node_modules/**/*',
+      'coverage/**/*',
+      'eslint.config.js',
+      'commitlint.config.mjs',
+      'eslint.config.mjs',
+      '.next/**/*',
+      'out/**/*',
+      'dist/**/*',
+      'next-env.d.ts',
+    ],
   },
-
   {
+    files: ['**/*.{js,jsx,ts,tsx}'],
     plugins: {
       '@typescript-eslint': tseslint.plugin,
       react: eslintReact,
@@ -27,28 +36,18 @@ export default tseslint.config(
       'react-refresh': eslintReactRefresh,
       prettier: prettierPlugin,
     },
-  },
-  {
-    ignores: [
-      'dist',
-      'node_modules',
-      'coverage',
-      'eslint.config.js',
-      'commitlint.config.mjs',
-      'eslint.config.mjs',
-    ],
-  },
-  js.configs.recommended,
-  ...tseslint.configs.recommended,
-  eslintConfigPrettier,
-
-  {
+    settings: {
+      react: {
+        version: 'detect',
+      },
+    },
     languageOptions: {
       globals: {
         ...globals.browser,
         ...globals.node,
         ...globals.es2020,
       },
+      parser: tseslint.parser,
       parserOptions: {
         project: ['tsconfig.json'],
       },
@@ -76,7 +75,6 @@ export default tseslint.config(
       '@typescript-eslint/no-unused-vars': 'off',
     },
   },
-
   {
     files: ['**/*.{ts,tsx}'],
     rules: {
@@ -97,5 +95,5 @@ export default tseslint.config(
         { args: 'none', ignoreRestSiblings: true },
       ],
     },
-  }
-)
+  },
+])

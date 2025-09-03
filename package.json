@@ -45,14 +45,16 @@
     "react-dom": "^19.1.1"
   },
   "lint-staged": {
-    "src/**/*.{ts,tsx,js,jsx}": [
+    "**/*.{ts,tsx,js,jsx}": [
       "eslint --fix"
     ],
-    "src/**/*.{css,scss}": [
+    "**/*.{css,scss}": [
       "stylelint --fix"
     ],
-    "src/**/*.{ts,tsx,js,jsx,json,scss,css,md}": [
+    "**/*.{ts,tsx,js,jsx,json,scss,css,md}": [
       "prettier --write"
-    ]
+    ],
+    "!**/.next/**": [],
+    "!**/out/**": []
   }
 }
