@@ -1,0 +1,20 @@
+.footer_text {
+  color: #fff;
+  font-family: 'Cabinet Grotesk';
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 2.0625rem; /* 165% */
+  letter-spacing: 0.045rem;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  width: 44rem;
+}
+
+.main__footer__text__wrapper {
+  margin-top: 3vh;
+  display: flex;
+  width: 100vw;
+  justify-content: center;
+}
