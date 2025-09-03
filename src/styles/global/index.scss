@@ -112,30 +112,28 @@ svg {
 
 .no-select {
   user-select: none;
-  user-select: none;
-  user-select: none;
 }
 
 @media (width <= 1200px) {
   html {
-    font-size: 15px; /* уменьшение размера шрифта для больших экранов */
+    font-size: 15px;
   }
 }
 
 @media (width <= 992px) {
   html {
-    font-size: 14px; /* уменьшение для средних экранов */
+    font-size: 14px;
   }
 }
 
 @media (width <= 768px) {
   html {
-    font-size: 13px; /* уменьшение для планшетов */
+    font-size: 13px;
   }
 }
 
 @media (width <= 480px) {
   html {
-    font-size: 12px; /* уменьшение для мобильных */
+    font-size: 12px;
   }
 }

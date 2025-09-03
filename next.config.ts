@@ -1,13 +1,12 @@
-import type { NextConfig } from 'next'
+import { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   output: 'export',
+  basePath: '',
   images: {
-    unoptimized: true,
+    unoptimized: false,
   },
-  basePath: '/next_app',
-  assetPrefix: '/next_app/',
 }
 
 export default nextConfig

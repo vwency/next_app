@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "pnpm exec next dev",
     "build": "pnpm exec next build",
-    "deploy": "pnpm build && pnpm export && pnpm exec gh-pages -d out",
+    "gh-deploy": "pnpm run build && pnpm exec gh-pages -d out",
     "start": "pnpm exec next start",
     "lint:eslint": "eslint 'src/**/*.{ts,tsx,js,jsx}' --no-error-on-unmatched-pattern",
     "lint:stylelint": "stylelint 'src/**/*.{css,scss}' --allow-empty-input",

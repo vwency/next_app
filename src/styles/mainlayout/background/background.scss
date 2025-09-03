@@ -25,11 +25,10 @@
 .main__background__image img {
   width: 100%;
   height: 100%;
-  object-fit: contain; /* на больших экранах */
+  object-fit: contain;
   display: block;
 }
 
-/* планшеты и смартфоны */
 @media (width <= 1024px) {
   .main__background__image img {
     object-fit: cover;
