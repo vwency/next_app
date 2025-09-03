@@ -1,12 +1,13 @@
 import React from 'react'
 import '@/styles/mainlayout/background/index.scss'
+import ImageBackground from './background'
+import SphereBackground from './sphere'
 
 const MainBackground = () => {
   return (
-    <div className="main__background__wrapper">
-      <div className="main__background">
-        <img src="assets/backgorund_m.png" alt="Background" />
-      </div>
+    <div>
+      <ImageBackground />
+      <SphereBackground />
     </div>
   )
 }
