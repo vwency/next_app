@@ -1,6 +1,16 @@
 .main__button__right {
   display: inline-flex;
   padding: 1rem 3rem;
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-tap-highlight-color: rgb(0, 0, 0, 0) !important;
+  -webkit-touch-callout: none;
+  user-select: none !important;
+  user-select: none;
+  user-select: none;
+  user-select: none;
+  user-select: none !important;
+  -webkit-focus-ring-color: transparent;
+  outline: none !important;
   justify-content: center;
   align-items: center;
   gap: 10px;
@@ -32,12 +42,12 @@
   }
 
   @media (width <= 480px) {
-    padding: 1rem 2rem;
+    padding: 3rem 4rem;
     font-size: 1.6rem;
   }
 
   @media (width <= 768px) {
-    padding: 1.6rem 3.5rem;
+    padding: 1.25rem 3.5rem;
     font-size: 1.3rem;
   }
 }

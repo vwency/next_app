@@ -9,7 +9,7 @@ const MainMenu = () => {
   return (
     <div className="menu_wrapper no-select">
       <div className="menu__logo">
-        <div className="menu__logo__text">Serendale</div>
+        <div className="menu__logo__text">КиноАфиша</div>
       </div>
 
       <div className="menu__options">
@@ -24,10 +24,10 @@ const MainMenu = () => {
         </button>
 
         <ul className={`list-inline ${isOpen ? 'active' : ''}`}>
-          <li className="list-inline__item">Smart Contracts</li>
-          <li className="list-inline__item">Services</li>
-          <li className="list-inline__item">Solutions</li>
-          <li className="list-inline__item">Whitepaper</li>
+          <li className="list-inline__item">Премьеры</li>
+          <li className="list-inline__item">Афиша</li>
+          <li className="list-inline__item">Кинотеатры</li>
+          <li className="list-inline__item">О нас</li>
         </ul>
       </div>
 

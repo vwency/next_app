@@ -2,11 +2,12 @@
   color: #fff;
   font-family: 'Clash Grotesk';
   font-size: 5rem;
-  font-style: normal;
   font-weight: 500;
   line-height: normal;
   letter-spacing: 0.1rem;
-  margin-top: -0.1vw;
+  margin: -0.1vw auto 0;
+  max-width: 95vw;
+  word-wrap: break-word;
 }
 
 .main__text__main__wrapper {

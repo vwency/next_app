@@ -1,4 +1,10 @@
 .main__button__left {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  user-select: none;
+  user-select: none;
+  user-select: none;
+  user-select: none;
   display: inline-flex;
   padding: 1rem 3rem;
   justify-content: center;
@@ -40,7 +46,7 @@
   }
 
   @media (width <= 768px) {
-    padding: 1.6rem 3.5rem;
+    padding: 1.25rem 3.5rem;
     font-size: 1.3rem;
   }
 }
