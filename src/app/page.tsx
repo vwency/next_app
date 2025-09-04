@@ -1,11 +1,11 @@
 import MainLayout from '@/components/main'
-import MainMenu from '../components/header/menu/menu'
 import '@/styles/global/index.scss'
+import HeaderLayout from '@/components/header'
 
 export default function Home() {
   return (
     <div>
-      <MainMenu />
+      <HeaderLayout />
       <MainLayout />
     </div>
   )

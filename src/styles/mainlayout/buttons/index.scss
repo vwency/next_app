@@ -5,4 +5,12 @@
   justify-content: center;
   gap: 1vw;
   margin-top: 2.96vh;
+
+  @media (width <= 480px) {
+    margin-top: 5vh;
+  }
+
+  @media (width <= 768px) {
+    margin-top: 4vh;
+  }
 }

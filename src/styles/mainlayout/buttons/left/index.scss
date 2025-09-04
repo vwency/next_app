@@ -33,4 +33,14 @@
     outline: none;
     box-shadow: 0 0 0 3px rgb(255, 59, 255, 0.4);
   }
+
+  @media (width <= 480px) {
+    padding: 3rem 4rem;
+    font-size: 1.6rem;
+  }
+
+  @media (width <= 768px) {
+    padding: 1.6rem 3.5rem;
+    font-size: 1.3rem;
+  }
 }

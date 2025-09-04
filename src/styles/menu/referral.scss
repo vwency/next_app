@@ -1,22 +1,33 @@
 .menu__refferal {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    box-sizing: border-box;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
 .list-inline-refferal {
-    list-style: none;
-    gap: 0.5vw;
-    padding: 0;
-    margin: 0;
+  list-style: none;
+  gap: 0.5vw;
+  padding: 0;
+  margin: 0;
+  display: flex;
 
-    display: flex;
+  &__item {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+  }
+}
 
-    &__item {
-        width: 1.25rem;
-        height: 1.25rem;
-        flex-shrink: 0;
-    }
+@media (width <= 768px) {
+  .menu__refferal {
+    display: none;
+  }
+}
+
+@media (width <= 576px) {
+  .menu__refferal {
+    display: none;
+  }
 }
