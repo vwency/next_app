@@ -1,16 +1,17 @@
 import React from 'react'
-import '@/styles/menu/index.scss'
 import MainMenu from './menu/menu'
 import '@/styles/header/index.scss'
 
-const HeaderContent = (
-  <div className="header_wrapper no-select">
-    <MainMenu />
-  </div>
-)
+interface HeaderLayoutProps {
+  contentRef: React.RefObject<HTMLDivElement | null>
+}
 
-const HeaderLayout = () => {
-  return <>{HeaderContent}</>
+const HeaderLayout: React.FC<HeaderLayoutProps> = ({ contentRef }) => {
+  return (
+    <div className="header_wrapper no-select">
+      <MainMenu contentRef={contentRef} />
+    </div>
+  )
 }
 
 export default HeaderLayout
