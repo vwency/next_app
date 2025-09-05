@@ -45,16 +45,16 @@ const MainMenu: React.FC<MainMenuProps> = ({ contentRef }) => {
 
       <div className="menu__refferal">
         <ul className="list-inline-refferal">
-          <li className="list-inline__item">
+          <li className="list-inline__item__refferal">
             <img src="assets/mdi_github.svg" alt="GitHub" />
           </li>
-          <li className="list-inline__item">
+          <li className="list-inline__item__refferal">
             <img src="assets/mdi_discord.svg" alt="Discord" />
           </li>
-          <li className="list-inline__item">
+          <li className="list-inline__item__refferal">
             <img src="assets/mdi_reddit.svg" alt="Reddit" />
           </li>
-          <li className="list-inline__item">
+          <li className="list-inline__item__refferal">
             <img src="assets/mdi_twitter.svg" alt="Twitter" />
           </li>
         </ul>
