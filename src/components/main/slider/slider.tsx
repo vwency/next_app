@@ -24,9 +24,16 @@ const SliderContent = () => {
     let timeout: NodeJS.Timeout
 
     const autoScroll = () => {
-      const delay = Math.random() * (2500 - 1000) + 1000 // от 1 до 2.5 сек
+      const delay = Math.random() * (2500 - 1000) + 1000
+
       timeout = setTimeout(() => {
-        emblaApi.scrollNext()
+        const goNext = Math.random() < 0.5
+        if (goNext) {
+          emblaApi.scrollNext()
+        } else {
+          emblaApi.scrollPrev()
+        }
+
         autoScroll()
       }, delay)
     }
