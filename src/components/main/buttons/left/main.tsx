@@ -3,7 +3,7 @@ import '@/styles/menu/index.scss'
 import LeftButtonMain from './button'
 
 const LeftButtonContent = (
-  <div className="no-select main__button__left ">
+  <div className="no-select ">
     <LeftButtonMain />
   </div>
 )
