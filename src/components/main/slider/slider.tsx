@@ -3,7 +3,7 @@
 import React from 'react'
 import Image from 'next/image'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { useAutoEmblaCarousel } from '@/hooks/useAutoEmblaCarousel'
+import { useAutoEmblaCarousel } from '@/hooks'
 import '@/styles/slider/index.scss'
 
 const SLIDER_IMAGES = [

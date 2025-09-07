@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import '@/styles/mainlayout/buttons/left/index.scss'
 import ModalContent from '../../content/modal'
-import { useModal } from '@/hooks/useModal'
+import { useModal } from '@/hooks'
 
 const LeftButtonMain: FC = () => {
   const { isOpen, openModal, closeModal } = useModal()
