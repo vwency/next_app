@@ -1,11 +1,12 @@
 .slider__wrapper {
-  width: 100vw;
-  height: 500px; // фиксируем высоту
+  width: 80%;
+  height: 500px;
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
   position: relative;
+  margin: 0 auto;
 }
 
 .slider {
@@ -13,6 +14,7 @@
   height: 100%;
   overflow: hidden;
   position: relative;
+  border-radius: 20px;
 }
 
 .slider__container {
@@ -28,4 +30,5 @@
 
 .slider__image {
   object-fit: cover;
+  border-radius: 20px;
 }
