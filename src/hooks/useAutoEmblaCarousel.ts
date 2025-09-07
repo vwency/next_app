@@ -1,20 +1,15 @@
 import { useCallback, useEffect, useRef } from 'react'
 import useEmblaCarousel from 'embla-carousel-react'
-
-const CAROUSEL_OPTIONS = {
-  loop: true,
-  duration: 45,
-  dragFree: false,
-  containScroll: 'trimSnaps' as const,
-}
-
-const AUTOSCROLL_INITIAL_DELAY = 500
-const AUTOSCROLL_RESUME_DELAY = 1500
-const BASE_DELAY = 4000
-const VARIANCE_DELAY = 3000
-const DIRECTION_CHANGE_PROBABILITY = 0.15
-const MIN_SAME_DIRECTION_COUNT = 3
-const MAX_SAME_DIRECTION_COUNT = 7
+import {
+  CAROUSEL_OPTIONS,
+  AUTOSCROLL_INITIAL_DELAY,
+  AUTOSCROLL_RESUME_DELAY,
+  BASE_DELAY,
+  VARIANCE_DELAY,
+  DIRECTION_CHANGE_PROBABILITY,
+  MIN_SAME_DIRECTION_COUNT,
+  MAX_SAME_DIRECTION_COUNT,
+} from '../consts'
 
 export const useAutoEmblaCarousel = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel(CAROUSEL_OPTIONS)
