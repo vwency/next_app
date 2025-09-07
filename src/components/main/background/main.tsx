@@ -5,7 +5,7 @@ import SphereBackground from './sphere'
 
 const MainBackground = () => {
   return (
-    <div>
+    <div className="main__background">
       <ImageBackground />
       <SphereBackground />
     </div>
