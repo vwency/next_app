@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useCallback } from 'react'
+import React, { useEffect, useCallback, useRef } from 'react'
 import useEmblaCarousel from 'embla-carousel-react'
 import Image from 'next/image'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
@@ -13,79 +13,131 @@ const SLIDER_IMAGES = [
 
 const CAROUSEL_OPTIONS = {
   loop: true,
-  duration: 35,
+  duration: 45,
   dragFree: false,
   containScroll: 'trimSnaps' as const,
 }
 
-const AUTOSCROLL_INITIAL_DELAY = 2000
-const AUTOSCROLL_RESUME_DELAY = 800
-const BASE_DELAY = 3000
-const VARIANCE_DELAY = 5000
-const NATURAL_RHYTHM_DIVISOR = 10000
-const MOOD_DIVISOR = 20000
-const MOOD_THRESHOLD = 0.3
+const AUTOSCROLL_INITIAL_DELAY = 500
+const AUTOSCROLL_RESUME_DELAY = 1500
+const BASE_DELAY = 4000
+const VARIANCE_DELAY = 3000
+const DIRECTION_CHANGE_PROBABILITY = 0.15
+const MIN_SAME_DIRECTION_COUNT = 3
+const MAX_SAME_DIRECTION_COUNT = 7
 
 const SliderContent = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel(CAROUSEL_OPTIONS)
+  const currentDirection = useRef<'next' | 'prev'>('next')
+  const sameDirectionCount = useRef(0)
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const isPausedRef = useRef(false)
 
-  const scrollPrev = () => emblaApi && emblaApi.scrollPrev()
-  const scrollNext = () => emblaApi && emblaApi.scrollNext()
+  const clearAutoScroll = useCallback(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+      timeoutRef.current = null
+    }
+  }, [])
+
+  const scrollPrev = useCallback(() => {
+    if (emblaApi) {
+      clearAutoScroll()
+      emblaApi.scrollPrev()
+      currentDirection.current = 'prev'
+      sameDirectionCount.current = 1
+      setTimeout(() => {
+        if (!isPausedRef.current) {
+          startAutoScroll()
+        }
+      }, AUTOSCROLL_RESUME_DELAY)
+    }
+  }, [emblaApi])
+
+  const scrollNext = useCallback(() => {
+    if (emblaApi) {
+      clearAutoScroll()
+      emblaApi.scrollNext()
+      currentDirection.current = 'next'
+      sameDirectionCount.current = 1
+      setTimeout(() => {
+        if (!isPausedRef.current) {
+          startAutoScroll()
+        }
+      }, AUTOSCROLL_RESUME_DELAY)
+    }
+  }, [emblaApi])
 
   const getNextDelay = useCallback(() => {
-    const naturalRhythm =
-      Math.sin(Date.now() / NATURAL_RHYTHM_DIVISOR) * 0.3 + 0.7
-    return BASE_DELAY + Math.random() * VARIANCE_DELAY * naturalRhythm
+    const variation = Math.random() * VARIANCE_DELAY
+    return BASE_DELAY + variation
+  }, [])
+
+  const shouldChangeDirection = useCallback(() => {
+    if (sameDirectionCount.current >= MAX_SAME_DIRECTION_COUNT) {
+      return true
+    }
+
+    if (sameDirectionCount.current < MIN_SAME_DIRECTION_COUNT) {
+      return false
+    }
+
+    return Math.random() < DIRECTION_CHANGE_PROBABILITY
   }, [])
 
   const getDirection = useCallback(() => {
-    const time = Date.now() / MOOD_DIVISOR
-    const mood = Math.sin(time)
+    sameDirectionCount.current++
 
-    if (mood > MOOD_THRESHOLD) {
-      return Math.random() < 0.75 ? 'next' : 'prev'
-    } else if (mood < -MOOD_THRESHOLD) {
-      return Math.random() < 0.25 ? 'next' : 'prev'
-    } else {
-      return Math.random() < 0.5 ? 'next' : 'prev'
+    if (shouldChangeDirection()) {
+      currentDirection.current =
+        currentDirection.current === 'next' ? 'prev' : 'next'
+      sameDirectionCount.current = 1
     }
-  }, [])
+
+    return currentDirection.current
+  }, [shouldChangeDirection])
+
+  const startAutoScroll = useCallback(() => {
+    if (isPausedRef.current) return
+
+    clearAutoScroll()
+
+    const delay = getNextDelay()
+    timeoutRef.current = setTimeout(() => {
+      if (!isPausedRef.current && emblaApi) {
+        const direction = getDirection()
+        if (direction === 'next') {
+          emblaApi.scrollNext()
+        } else {
+          emblaApi.scrollPrev()
+        }
+        startAutoScroll()
+      }
+    }, delay)
+  }, [emblaApi, getNextDelay, getDirection, clearAutoScroll])
 
   useEffect(() => {
     if (!emblaApi) return
 
-    let timeout: NodeJS.Timeout
-    let isPaused = false
-
-    const autoScroll = () => {
-      if (isPaused) return
-      const delay = getNextDelay()
-      timeout = setTimeout(() => {
-        if (!isPaused && emblaApi) {
-          const direction = getDirection()
-          if (direction === 'next') {
-            emblaApi.scrollNext()
-          } else {
-            emblaApi.scrollPrev()
-          }
-          autoScroll()
-        }
-      }, delay)
-    }
-
     const handleMouseEnter = () => {
-      isPaused = true
-      clearTimeout(timeout)
+      isPausedRef.current = true
+      clearAutoScroll()
     }
 
     const handleMouseLeave = () => {
-      isPaused = false
+      isPausedRef.current = false
       setTimeout(() => {
-        if (!isPaused) autoScroll()
+        if (!isPausedRef.current) {
+          startAutoScroll()
+        }
       }, AUTOSCROLL_RESUME_DELAY)
     }
 
-    setTimeout(autoScroll, AUTOSCROLL_INITIAL_DELAY)
+    setTimeout(() => {
+      if (!isPausedRef.current) {
+        startAutoScroll()
+      }
+    }, AUTOSCROLL_INITIAL_DELAY)
 
     const sliderElement = emblaApi?.containerNode()
 
@@ -95,13 +147,13 @@ const SliderContent = () => {
     }
 
     return () => {
-      clearTimeout(timeout)
+      clearAutoScroll()
       if (sliderElement) {
         sliderElement.removeEventListener('mouseenter', handleMouseEnter)
         sliderElement.removeEventListener('mouseleave', handleMouseLeave)
       }
     }
-  }, [emblaApi, getNextDelay, getDirection, emblaRef])
+  }, [emblaApi, startAutoScroll, clearAutoScroll])
 
   return (
     <div className="slider">
