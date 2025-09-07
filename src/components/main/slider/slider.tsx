@@ -104,34 +104,39 @@ const SliderContent = () => {
   }, [emblaApi, getNextDelay, getDirection, emblaRef])
 
   return (
-    <div className="slider" ref={emblaRef}>
-      <div className="slider__container">
-        {SLIDER_IMAGES.map((src, i) => (
-          <div key={i} className="slider__slide">
-            <Image
-              src={src}
-              alt={`Slide ${i + 1}`}
-              fill
-              className="slider__image"
-              priority={i === 0}
-            />
-          </div>
-        ))}
+    <div className="slider">
+      <div className="slider__viewport" ref={emblaRef}>
+        <div className="slider__container">
+          {SLIDER_IMAGES.map((src, i) => (
+            <div key={i} className="slider__slide">
+              <Image
+                src={src}
+                alt={`Slide ${i + 1}`}
+                fill
+                className="slider__image"
+                priority={i === 0}
+              />
+            </div>
+          ))}
+        </div>
       </div>
-      <button
-        onClick={scrollPrev}
-        className="slider__button slider__button--left"
-        aria-label="Previous slide"
-      >
-        <ChevronLeft />
-      </button>
-      <button
-        onClick={scrollNext}
-        className="slider__button slider__button--right"
-        aria-label="Next slide"
-      >
-        <ChevronRight />
-      </button>
+
+      <div className="slider__navigation">
+        <button
+          onClick={scrollPrev}
+          className="slider__nav-button slider__nav-button--prev"
+          aria-label="Previous slide"
+        >
+          <ChevronLeft size={20} />
+        </button>
+        <button
+          onClick={scrollNext}
+          className="slider__nav-button slider__nav-button--next"
+          aria-label="Next slide"
+        >
+          <ChevronRight size={20} />
+        </button>
+      </div>
     </div>
   )
 }

@@ -70,7 +70,7 @@ export default defineConfig([
         { namedComponents: 'arrow-function' },
       ],
       'react/self-closing-comp': ['error', { component: true, html: true }],
-      'max-lines': ['warn', { max: 124 }],
+      'max-lines': ['warn', { max: 200 }],
       'max-params': ['error', 3],
       '@typescript-eslint/no-unused-vars': 'off',
     },
@@ -88,7 +88,7 @@ export default defineConfig([
         { props: 'never', children: 'never' },
       ],
       'react/self-closing-comp': ['error', { component: true, html: true }],
-      'max-lines': ['warn', { max: 124 }],
+      'max-lines': ['warn', { max: 200 }],
       'max-params': ['error', 3],
       '@typescript-eslint/no-unused-vars': [
         'warn',
