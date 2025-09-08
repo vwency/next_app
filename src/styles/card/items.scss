@@ -1,7 +1,6 @@
 .card-item {
   background: rgb(255, 255, 255, 0.2);
   backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
   border-radius: 15px;
   border: 1px solid rgb(255, 255, 255, 0.3);
   box-shadow: 0 4px 30px rgb(0, 0, 0, 0.1);
@@ -12,6 +11,24 @@
   height: 20vh;
   display: flex;
   flex-direction: column;
+}
+
+@media (width >= 768px) {
+  .card-item {
+    height: 25vh;
+  }
+}
+
+@media (width >= 1200px) {
+  .card-item {
+    height: 30vh;
+  }
+}
+
+@media (width >= 1600px) {
+  .card-item {
+    height: 35vh;
+  }
 }
 
 .card-item__image {
@@ -31,8 +48,11 @@
 .card-item__description {
   padding: 10px;
   color: #fff;
-  text-align: center;
   font-weight: 500;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
   flex-grow: 1;
   overflow: hidden;
 }
