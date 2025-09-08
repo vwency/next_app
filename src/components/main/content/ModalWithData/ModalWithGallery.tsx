@@ -55,7 +55,7 @@ const ModalWithGallery: React.FC<ModalProps> = ({ isOpen, onClose }) => {
           <h1 style={{ textAlign: 'center', marginBottom: '30px' }}>
             Галерея картинок
           </h1>
-          <CardGrid items={galleryItems} />
+          <CardGrid items={galleryItems} isOpen={isOpen} onClose={onClose} />
         </main>
       </div>
     </div>
