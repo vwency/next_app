@@ -15,6 +15,7 @@ const CardGrid: React.FC<CardGridProps> = ({ items }) => {
           image={item.image}
           alt={item.alt}
           description={item.description}
+          detailedDescription={item.detailedDescription}
         />
       ))}
     </div>
