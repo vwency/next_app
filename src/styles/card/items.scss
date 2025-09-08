@@ -13,6 +13,11 @@
   flex-direction: column;
 }
 
+.card-item:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 40px rgb(0, 0, 0, 0.2);
+}
+
 @media (width >= 768px) {
   .card-item {
     height: 25vh;

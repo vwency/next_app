@@ -17,7 +17,10 @@
 
   &__item {
     text-decoration: none;
+    display: flex;
     width: 120px;
+    height: 3vh;
+    justify-content: center;
     align-items: center;
     color: #fff;
     font-family: 'Clash Grotesk';
