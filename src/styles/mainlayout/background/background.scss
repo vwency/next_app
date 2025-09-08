@@ -34,3 +34,33 @@
     object-fit: cover;
   }
 }
+
+.main__background {
+  position: absolute;
+  top: 20vh;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -4;
+  overflow: hidden;
+
+  /* Скрываем верхние 10vh изображения */
+  clip-path: inset(10vh 0 0 0);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -10vh; /* Смещаем псевдоэлемент вверх */
+    left: 0;
+    width: 100%;
+    height: calc(100% + 10vh); /* Увеличиваем высоту */
+    background: inherit;
+    filter: blur(15px);
+    opacity: 0.6;
+    pointer-events: none;
+
+    /* Альтернативный способ скрыть верх */
+
+    /* clip-path: inset(10vh 0 0 0); */
+  }
+}
