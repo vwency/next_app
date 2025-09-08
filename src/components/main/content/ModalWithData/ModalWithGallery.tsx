@@ -19,6 +19,12 @@ const ModalWithGallery: React.FC<ModalProps> = ({ isOpen, onClose }) => {
 
   if (!mounted || (!isOpen && !animating)) return null
 
+  const handleContentClick = (e: React.MouseEvent) => {
+    if ((e.target as HTMLElement).classList.contains('modal__content')) {
+      onClose()
+    }
+  }
+
   const modalElement = (
     <div
       className={`modal__overlay ${isOpen ? 'modal--open' : 'modal--close'}`}
@@ -27,7 +33,7 @@ const ModalWithGallery: React.FC<ModalProps> = ({ isOpen, onClose }) => {
       aria-modal="true"
       aria-labelledby="modal-title"
     >
-      <div className="modal__content">
+      <div className="modal__content" onClick={handleContentClick}>
         <button
           className="modal__close"
           onClick={onClose}
