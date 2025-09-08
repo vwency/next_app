@@ -1,5 +1,6 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useRef } from 'react'
 import '@/styles/card/items.scss'
+import { useCardItemHover } from '@/hooks'
 
 export interface CardItemProps {
   image: string
@@ -14,28 +15,14 @@ const CardItem: React.FC<CardItemProps> = ({
   description,
   detailedDescription = '',
 }) => {
-  const [isHovered, setIsHovered] = useState(false)
-  const detailedRef = useRef<HTMLDivElement>(null)
   const descriptionRef = useRef<HTMLDivElement>(null)
-  const [detailedHeight, setDetailedHeight] = useState(0)
-
-  useEffect(() => {
-    if (detailedRef.current) {
-      setDetailedHeight(detailedRef.current.scrollHeight)
-    }
-  }, [detailedDescription])
-
-  const calculateBaseHeight = () => {
-    const imageHeight = Math.min(window.innerHeight * 0.5, 250)
-    const descriptionHeight = 60
-    const padding = 20
-    return imageHeight + descriptionHeight + padding
-  }
-
-  const calculateExpandedHeight = () => {
-    const baseHeight = calculateBaseHeight()
-    return baseHeight + detailedHeight + 20
-  }
+  const {
+    isHovered,
+    setIsHovered,
+    detailedRef,
+    calculateBaseHeight,
+    calculateExpandedHeight,
+  } = useCardItemHover({ detailedDescription })
 
   return (
     <div
