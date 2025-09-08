@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import '@/styles/mainlayout/buttons/left/index.scss'
-import ModalContent from '../../content/modal'
+import ModalWithGallery from '../../content/ModalWithData/ModalWithGallery'
 import { useModal } from '@/hooks'
 
 const LeftButtonMain: FC = () => {
@@ -12,10 +12,7 @@ const LeftButtonMain: FC = () => {
         Смотреть
       </button>
 
-      <ModalContent isOpen={isOpen} onClose={closeModal}>
-        <h2 id="modal-title">Черное окно</h2>
-        <p>Содержимое модального окна</p>
-      </ModalContent>
+      <ModalWithGallery isOpen={isOpen} onClose={closeModal} />
     </>
   )
 }
