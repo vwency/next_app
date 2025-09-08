@@ -2,7 +2,7 @@
   font-family: Anton, 'Clash Grotesk', sans-serif; // более агрессивный шрифт
   font-size: 5rem;
   font-style: normal;
-  font-weight: 700; // жирнее для агрессивности
+  font-weight: 300; // жирнее для агрессивности
   line-height: normal;
   letter-spacing: 0.05rem; // чуть плотнее
   word-wrap: break-word;
@@ -14,7 +14,6 @@
     // ярко-оранжевый
     #ff8c00 100% // мягкий оранжевый
   );
-  background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   text-align: center;
