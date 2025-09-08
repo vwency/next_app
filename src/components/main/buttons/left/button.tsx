@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import '@/styles/mainlayout/buttons/left/index.scss'
-import ModalWithGallery from '../../content/ModalWithData/ModalWithGallery'
+import ModalWithGallery from '../../content/MainModal/ModalWithData/ModalWithGallery'
 import { useModal } from '@/hooks'
 
 const LeftButtonMain: FC = () => {

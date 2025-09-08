@@ -1,23 +1,21 @@
 .fast_text {
-  font-family: Anton, 'Clash Grotesk', sans-serif; // более агрессивный шрифт
+  font-family: 'Clash Grotesk';
   font-size: 5rem;
-  font-style: normal;
-  font-weight: 300; // жирнее для агрессивности
-  line-height: normal;
-  letter-spacing: 0.05rem; // чуть плотнее
   word-wrap: break-word;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: 0.1rem;
   background: linear-gradient(
     90deg,
-    #ff6a00 0%,
-    // оранжевый
-    #ff4500 50%,
-    // ярко-оранжевый
-    #ff8c00 100% // мягкий оранжевый
+    #ff3bff 0%,
+    #ecbfbf 38.02%,
+    #5c24ff 75.83%,
+    #d94fd5 100%
   );
   background-clip: text;
   -webkit-text-fill-color: transparent;
   text-align: center;
-  text-transform: uppercase; // делает текст более мощным
 }
 
 .main__fast__text__wrapper {
