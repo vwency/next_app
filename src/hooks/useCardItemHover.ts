@@ -2,19 +2,26 @@ import { useState, useRef, useEffect } from 'react'
 
 interface UseCardItemHoverProps {
   detailedDescription?: string
+  imageRef?: React.RefObject<HTMLDivElement | null>
 }
 
-const IMAGE_HEIGHT_VH = 35
-const DESCRIPTION_HEIGHT_VH = 8
-const PADDING_VH = 0
-const DETAILED_PADDING = 30
+const DESCRIPTION_HEIGHT = 40 // px
+const DETAILED_PADDING = 30 // px
 
 export const useCardItemHover = ({
   detailedDescription = '',
+  imageRef,
 }: UseCardItemHoverProps) => {
   const [isHovered, setIsHovered] = useState(false)
   const detailedRef = useRef<HTMLDivElement>(null)
   const [detailedHeight, setDetailedHeight] = useState(0)
+  const [imageHeight, setImageHeight] = useState(0)
+
+  useEffect(() => {
+    if (imageRef?.current) {
+      setImageHeight(imageRef.current.offsetHeight)
+    }
+  }, [imageRef?.current])
 
   useEffect(() => {
     if (detailedRef.current && detailedDescription) {
@@ -35,13 +42,7 @@ export const useCardItemHover = ({
   }, [detailedDescription])
 
   const calculateBaseHeight = () => {
-    const imageHeight = Math.min(
-      window.innerHeight * (IMAGE_HEIGHT_VH / 100),
-      window.innerHeight
-    )
-    const descriptionHeight = window.innerHeight * (DESCRIPTION_HEIGHT_VH / 100)
-    const padding = window.innerHeight * (PADDING_VH / 100)
-    return imageHeight + descriptionHeight + padding
+    return imageHeight + DESCRIPTION_HEIGHT
   }
 
   const calculateExpandedHeight = () => {

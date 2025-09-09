@@ -16,13 +16,14 @@ const CardItem: React.FC<CardItemProps> = ({
   detailedDescription = '',
 }) => {
   const descriptionRef = useRef<HTMLDivElement>(null)
+  const imageRef = useRef<HTMLDivElement>(null)
   const {
     isHovered,
     setIsHovered,
     detailedRef,
     calculateBaseHeight,
     calculateExpandedHeight,
-  } = useCardItemHover({ detailedDescription })
+  } = useCardItemHover({ detailedDescription, imageRef })
 
   return (
     <div
@@ -36,7 +37,7 @@ const CardItem: React.FC<CardItemProps> = ({
             : `${calculateBaseHeight()}px`,
       }}
     >
-      <div className="card-item__image">
+      <div className="card-item__image" ref={imageRef}>
         <img src={image} alt={alt} />
       </div>
       <div ref={descriptionRef} className="card-item__description">
