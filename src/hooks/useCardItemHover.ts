@@ -5,8 +5,8 @@ interface UseCardItemHoverProps {
   imageRef?: React.RefObject<HTMLDivElement | null>
 }
 
-const DESCRIPTION_HEIGHT = 40 // px
-const DETAILED_PADDING = 30 // px
+const DESCRIPTION_HEIGHT_VH = 3
+const DETAILED_PADDING_VH = 2
 
 export const useCardItemHover = ({
   detailedDescription = '',
@@ -16,6 +16,8 @@ export const useCardItemHover = ({
   const detailedRef = useRef<HTMLDivElement>(null)
   const [detailedHeight, setDetailedHeight] = useState(0)
   const [imageHeight, setImageHeight] = useState(0)
+
+  const vhToPx = (vh: number) => (window.innerHeight * vh) / 100
 
   useEffect(() => {
     if (imageRef?.current) {
@@ -29,7 +31,9 @@ export const useCardItemHover = ({
       element.style.visibility = 'hidden'
       element.style.height = 'auto'
       element.style.opacity = '1'
-      element.style.padding = '15px'
+      element.style.padding = `${vhToPx(DETAILED_PADDING_VH) / 2}px ${vhToPx(
+        DETAILED_PADDING_VH
+      )}px`
 
       const height = element.scrollHeight
       setDetailedHeight(height)
@@ -37,17 +41,17 @@ export const useCardItemHover = ({
       element.style.visibility = ''
       element.style.height = '0'
       element.style.opacity = '0'
-      element.style.padding = '0 15px'
+      element.style.padding = `0 ${vhToPx(DETAILED_PADDING_VH)}px`
     }
   }, [detailedDescription])
 
   const calculateBaseHeight = () => {
-    return imageHeight + DESCRIPTION_HEIGHT
+    return imageHeight + vhToPx(DESCRIPTION_HEIGHT_VH)
   }
 
   const calculateExpandedHeight = () => {
     const baseHeight = calculateBaseHeight()
-    return baseHeight + detailedHeight + DETAILED_PADDING
+    return baseHeight + detailedHeight + vhToPx(DETAILED_PADDING_VH)
   }
 
   return {
