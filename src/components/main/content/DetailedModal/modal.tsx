@@ -18,14 +18,9 @@ const DetailedModal: React.FC<ModalProps> = ({
   portalRootId,
 }) => {
   const modalRef = useRef<HTMLDivElement | null>(null)
-  const previouslyFocused = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
     if (!isOpen) return
-
-    previouslyFocused.current = document.activeElement as HTMLElement | null
-
-    modalRef.current?.focus()
 
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
@@ -39,7 +34,6 @@ const DetailedModal: React.FC<ModalProps> = ({
     return () => {
       document.removeEventListener('keydown', onKeyDown)
       document.body.style.overflow = originalOverflow
-      previouslyFocused.current?.focus()
     }
   }, [isOpen, onClose])
 

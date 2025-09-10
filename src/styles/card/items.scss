@@ -13,11 +13,17 @@
   flex-direction: column;
   position: relative;
   justify-content: flex-start;
+  outline: none;
   transform-origin: top center;
 
   &:hover {
     transform: scale(1.03);
     box-shadow: 0 8px 40px rgb(0, 0, 0, 0.2);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
   }
 }
 
