@@ -5,8 +5,8 @@ interface UseCardItemHoverProps {
   imageRef?: React.RefObject<HTMLDivElement | null>
 }
 
-const DESCRIPTION_HEIGHT_VH = 3.5
-const DETAILED_PADDING_VH = 2
+const DESCRIPTION_HEIGHT_REM = 3
+const DETAILED_PADDING_REM = 1.26
 
 export const useCardItemHover = ({
   detailedDescription = '',
@@ -17,7 +17,12 @@ export const useCardItemHover = ({
   const [detailedHeight, setDetailedHeight] = useState(0)
   const [imageHeight, setImageHeight] = useState(0)
 
-  const vhToPx = (vh: number) => (window.innerHeight * vh) / 100
+  const remToPx = (rem: number) => {
+    const rootFontSize = parseFloat(
+      getComputedStyle(document.documentElement).fontSize
+    )
+    return rem * rootFontSize
+  }
 
   useEffect(() => {
     if (imageRef?.current) {
@@ -31,8 +36,8 @@ export const useCardItemHover = ({
       element.style.visibility = 'hidden'
       element.style.height = 'auto'
       element.style.opacity = '1'
-      element.style.padding = `${vhToPx(DETAILED_PADDING_VH) / 2}px ${vhToPx(
-        DETAILED_PADDING_VH
+      element.style.padding = `${remToPx(DETAILED_PADDING_REM) / 2}px ${remToPx(
+        DETAILED_PADDING_REM
       )}px`
 
       const height = element.scrollHeight
@@ -41,17 +46,17 @@ export const useCardItemHover = ({
       element.style.visibility = ''
       element.style.height = '0'
       element.style.opacity = '0'
-      element.style.padding = `0 ${vhToPx(DETAILED_PADDING_VH)}px`
+      element.style.padding = `0 ${remToPx(DETAILED_PADDING_REM)}px`
     }
   }, [detailedDescription])
 
   const calculateBaseHeight = () => {
-    return imageHeight + vhToPx(DESCRIPTION_HEIGHT_VH)
+    return imageHeight + remToPx(DESCRIPTION_HEIGHT_REM)
   }
 
   const calculateExpandedHeight = () => {
     const baseHeight = calculateBaseHeight()
-    return baseHeight + detailedHeight + vhToPx(DETAILED_PADDING_VH)
+    return baseHeight + detailedHeight + remToPx(DETAILED_PADDING_REM)
   }
 
   return {
