@@ -13,6 +13,7 @@
   flex-direction: column;
   position: relative;
   justify-content: flex-start;
+  transform-origin: top center;
 
   &:hover {
     transform: scale(1.03);
@@ -25,7 +26,7 @@
   width: 100%;
   overflow: hidden;
   min-height: 0;
-  height: 30vh;
+  height: 60vh;
 
   img {
     width: 100%;
@@ -52,8 +53,8 @@
   font-size: 0.9rem;
   text-align: center;
   transition:
-    opacity 0.3s ease,
-    height 0.3s ease,
-    padding 0.3s ease;
+    opacity 0.2s ease,
+    height 0.2s ease,
+    padding 0.2s ease;
   flex-shrink: 0;
 }

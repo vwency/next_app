@@ -5,7 +5,7 @@ interface UseCardItemHoverProps {
   imageRef?: React.RefObject<HTMLDivElement | null>
 }
 
-const DESCRIPTION_HEIGHT_VH = 3
+const DESCRIPTION_HEIGHT_VH = 3.5
 const DETAILED_PADDING_VH = 2
 
 export const useCardItemHover = ({

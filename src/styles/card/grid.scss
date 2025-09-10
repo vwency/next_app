@@ -1,7 +1,8 @@
 .card-grid {
+  margin-top: 5vh;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(30vw, 1fr));
-  gap: 1.9vw;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: 3vw;
   padding: 10px;
   z-index: 100;
 
