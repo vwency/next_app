@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import '@/styles/menu/index.scss'
 
 interface MainMenuProps {
-  contentRef: React.RefObject<HTMLDivElement | null> // <-- разрешаем null
+  contentRef: React.RefObject<HTMLDivElement | null>
 }
 
 const MainMenu: React.FC<MainMenuProps> = ({ contentRef }) => {

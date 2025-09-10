@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { createPortal } from 'react-dom'
 import '@/styles/card/index.scss'
 import { useModalClose } from '@/hooks/useModalClose'
@@ -6,6 +6,7 @@ import { useLockBodyScroll } from '@/hooks/useLockBodyScroll'
 import { useMountedAnimation } from '@/hooks/useMountedAnimation'
 import CardGrid from '../advertisements/CardGrid'
 import { galleryItems } from './items'
+import DetailedModal from '../../DetailedModal/modal'
 
 interface ModalProps {
   isOpen: boolean
@@ -16,6 +17,10 @@ const ModalWithGallery: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   const { mounted, animating } = useMountedAnimation(isOpen)
   const { handleOverlayClick } = useModalClose({ isOpen, onClose })
   useLockBodyScroll(isOpen)
+
+  const [selectedItem, setSelectedItem] = useState<
+    null | (typeof galleryItems)[0]
+  >(null)
 
   if (!mounted || (!isOpen && !animating)) return null
 
@@ -55,9 +60,33 @@ const ModalWithGallery: React.FC<ModalProps> = ({ isOpen, onClose }) => {
           <h1 style={{ textAlign: 'center', marginBottom: '30px' }}>
             Галерея картинок
           </h1>
-          <CardGrid items={galleryItems} isOpen={isOpen} onClose={onClose} />
+          <CardGrid
+            items={galleryItems}
+            isOpen={isOpen}
+            onClose={onClose}
+            onItemClick={(item) => setSelectedItem(item)}
+          />
         </main>
       </div>
+
+      {selectedItem && (
+        <DetailedModal
+          isOpen={!!selectedItem}
+          onClose={() => setSelectedItem(null)}
+          title={selectedItem.description}
+        >
+          <img
+            src={selectedItem.image}
+            alt={selectedItem.alt || selectedItem.description}
+            style={{ maxWidth: '100%', display: 'block', margin: '0 auto' }}
+          />
+          {selectedItem.detailedDescription && (
+            <p style={{ marginTop: '15px' }}>
+              {selectedItem.detailedDescription}
+            </p>
+          )}
+        </DetailedModal>
+      )}
     </div>
   )
 
