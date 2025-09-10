@@ -51,7 +51,7 @@ const ModalWithGallery: React.FC<ModalProps> = ({ isOpen, onClose }) => {
           </svg>
         </button>
 
-        <main style={{ padding: '20px' }}>
+        <main className="modal__body">
           <h1 style={{ textAlign: 'center', marginBottom: '30px' }}>
             Галерея картинок
           </h1>
