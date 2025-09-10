@@ -7,7 +7,6 @@ interface ModalProps {
   onClose: () => void
   title?: string
   children?: React.ReactNode
-
   portalRootId?: string
 }
 
@@ -88,4 +87,4 @@ const DetailedModal: React.FC<ModalProps> = ({
   )
 }
 
-export default DetailedModal
+export default React.memo(DetailedModal)
