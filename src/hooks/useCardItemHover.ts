@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback, useMemo } from 'react'
 
 interface UseCardItemHoverProps {
   detailedDescription?: string
@@ -7,6 +7,8 @@ interface UseCardItemHoverProps {
 
 const DESCRIPTION_HEIGHT_REM = 3.2
 const DETAILED_PADDING_REM = 1.02
+
+let resizeTimeout: NodeJS.Timeout | null = null
 
 export const useCardItemHover = ({
   detailedDescription = '',
@@ -17,61 +19,129 @@ export const useCardItemHover = ({
   const [detailedHeight, setDetailedHeight] = useState(0)
   const [imageHeight, setImageHeight] = useState(0)
 
-  const remToPx = (rem: number) => {
+  const heightCache = useRef<{
+    imageHeight?: number
+    detailedHeight?: number
+    remToPx?: number
+  }>({})
+
+  const remToPx = useMemo(() => {
+    if (heightCache.current.remToPx) {
+      return (rem: number) => rem * heightCache.current.remToPx!
+    }
+
     const rootFontSize = parseFloat(
       getComputedStyle(document.documentElement).fontSize
     )
-    return rem * rootFontSize
-  }
+    heightCache.current.remToPx = rootFontSize
 
-  const measureHeights = () => {
+    return (rem: number) => rem * rootFontSize
+  }, [])
+
+  const supportsHover = useMemo(() => {
+    return window.matchMedia('(hover: hover)').matches
+  }, [])
+
+  const measureHeights = useCallback(() => {
+    if (!supportsHover && !detailedDescription) return
+
+    let newImageHeight = imageHeight
+    let newDetailedHeight = detailedHeight
+
     if (imageRef?.current) {
-      setImageHeight(imageRef.current.offsetHeight)
+      const currentImageHeight = imageRef.current.offsetHeight
+      if (currentImageHeight !== heightCache.current.imageHeight) {
+        newImageHeight = currentImageHeight
+        heightCache.current.imageHeight = currentImageHeight
+        setImageHeight(currentImageHeight)
+      }
     }
 
     if (detailedRef.current && detailedDescription) {
       const element = detailedRef.current
+      const currentDetailedHeight = heightCache.current.detailedHeight
 
-      element.style.visibility = 'hidden'
-      element.style.height = 'auto'
-      element.style.opacity = '1'
-      element.style.overflow = 'visible'
-      element.style.whiteSpace = 'normal'
-      element.style.padding = `${remToPx(DETAILED_PADDING_REM) / 2}px ${remToPx(
-        DETAILED_PADDING_REM
-      )}px`
+      if (!currentDetailedHeight) {
+        const originalStyles = {
+          visibility: element.style.visibility,
+          height: element.style.height,
+          opacity: element.style.opacity,
+          overflow: element.style.overflow,
+          whiteSpace: element.style.whiteSpace,
+          padding: element.style.padding,
+        }
 
-      const height = element.scrollHeight
-      setDetailedHeight(height)
+        element.style.visibility = 'hidden'
+        element.style.height = 'auto'
+        element.style.opacity = '1'
+        element.style.overflow = 'visible'
+        element.style.whiteSpace = 'normal'
+        element.style.padding = `${
+          remToPx(DETAILED_PADDING_REM) / 2
+        }px ${remToPx(DETAILED_PADDING_REM)}px`
 
-      element.style.visibility = ''
-      element.style.height = '0'
-      element.style.opacity = '0'
-      element.style.overflow = 'hidden'
-      element.style.padding = `0 ${remToPx(DETAILED_PADDING_REM)}px`
+        const height = element.scrollHeight
+        newDetailedHeight = height
+        heightCache.current.detailedHeight = height
+        setDetailedHeight(height)
+
+        Object.assign(element.style, originalStyles)
+      }
     }
-  }
+  }, [
+    detailedDescription,
+    imageHeight,
+    detailedHeight,
+    remToPx,
+    imageRef,
+    supportsHover,
+  ])
+
+  const handleResize = useCallback(() => {
+    if (resizeTimeout) {
+      clearTimeout(resizeTimeout)
+    }
+
+    resizeTimeout = setTimeout(() => {
+      heightCache.current = {}
+      measureHeights()
+    }, 150)
+  }, [measureHeights])
 
   useEffect(() => {
     measureHeights()
-    window.addEventListener('resize', measureHeights)
+    window.addEventListener('resize', handleResize, { passive: true })
+
     return () => {
-      window.removeEventListener('resize', measureHeights)
+      window.removeEventListener('resize', handleResize)
+      if (resizeTimeout) {
+        clearTimeout(resizeTimeout)
+      }
     }
-  }, [detailedDescription])
+  }, [detailedDescription, handleResize, measureHeights])
 
-  const calculateBaseHeight = () => {
+  const calculateBaseHeight = useCallback(() => {
     return imageHeight + remToPx(DESCRIPTION_HEIGHT_REM)
-  }
+  }, [imageHeight, remToPx])
 
-  const calculateExpandedHeight = () => {
+  const calculateExpandedHeight = useCallback(() => {
     const baseHeight = calculateBaseHeight()
     return baseHeight + detailedHeight + remToPx(DETAILED_PADDING_REM)
-  }
+  }, [calculateBaseHeight, detailedHeight, remToPx])
+
+  const setIsHoveredOptimized = useCallback(
+    (hovered: boolean) => {
+      if (!supportsHover && hovered) return
+      requestAnimationFrame(() => {
+        setIsHovered(hovered)
+      })
+    },
+    [supportsHover]
+  )
 
   return {
     isHovered,
-    setIsHovered,
+    setIsHovered: setIsHoveredOptimized,
     detailedRef,
     detailedHeight,
     calculateBaseHeight,
