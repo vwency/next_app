@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { createPortal } from 'react-dom'
 import '@/styles/card/index.scss'
-import { useModalClose } from '@/hooks/useModalClose'
 import { useLockBodyScroll } from '@/hooks/useLockBodyScroll'
 import { useMountedAnimation } from '@/hooks/useMountedAnimation'
 import CardGrid from '../advertisements/CardGrid'
@@ -15,15 +14,13 @@ interface ModalProps {
 
 const ModalWithGallery: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   const { mounted, animating } = useMountedAnimation(isOpen)
-  const { handleOverlayClick } = useModalClose({ isOpen, onClose })
   useLockBodyScroll(isOpen)
-
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null)
 
   if (!mounted || (!isOpen && !animating)) return null
 
-  const handleContentClick = (e: React.MouseEvent) => {
-    if ((e.target as HTMLElement).classList.contains('modal__content')) {
+  const handleOverlayClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
       onClose()
     }
   }
@@ -36,7 +33,7 @@ const ModalWithGallery: React.FC<ModalProps> = ({ isOpen, onClose }) => {
       aria-modal="true"
       aria-labelledby="modal-title"
     >
-      <div className="modal__content" onClick={handleContentClick}>
+      <div className="modal__content" onClick={(e) => e.stopPropagation()}>
         <button
           className="modal__close"
           onClick={onClose}
@@ -54,14 +51,20 @@ const ModalWithGallery: React.FC<ModalProps> = ({ isOpen, onClose }) => {
           </svg>
         </button>
 
-        <main className="modal__body">
+        <main
+          className="modal__body"
+          onClick={(e) => {
+            const target = e.target as HTMLElement
+            if (!target.closest('.card-item')) {
+              onClose()
+            }
+          }}
+        >
           <h1 style={{ textAlign: 'center', marginBottom: '30px' }}>
             Галерея картинок
           </h1>
           <CardGrid
             items={galleryItems}
-            isOpen={isOpen}
-            onClose={onClose}
             onItemClick={(item) =>
               setSelectedItem({
                 ...item,

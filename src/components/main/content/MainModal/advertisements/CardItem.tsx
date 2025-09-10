@@ -51,7 +51,7 @@ const CardItem: React.FC<CardItemProps> = ({
             height: isHovered ? 'auto' : 0,
             opacity: isHovered ? 1 : 0,
             overflow: isHovered ? 'visible' : 'hidden',
-            padding: isHovered ? '10px' : '0 10px',
+            padding: isHovered ? '1px' : '0 1px',
           }}
         >
           {detailedDescription}
