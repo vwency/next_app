@@ -13,5 +13,5 @@ pnpm dev
 #### start(docker)
 
 ```
-docker-compose up
+docker-compose up --build
 ```
