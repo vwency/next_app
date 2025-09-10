@@ -5,18 +5,17 @@ import MainText from './text_main/main'
 import MainButtons from './buttons/main'
 import MainSlider from './slider/main'
 import MainFooterText from './text_footer/main'
-const MainContent = (
-  <div className="main__layout no-select">
-    <MainTextHead />
-    <MainText />
-    <MainFooterText />
-    <MainSlider />
-    <MainButtons />
-  </div>
-)
 
 const MainLayout = () => {
-  return <>{MainContent}</>
+  return (
+    <div className="main__layout no-select">
+      <MainTextHead />
+      <MainText />
+      <MainFooterText />
+      <MainSlider />
+      <MainButtons />
+    </div>
+  )
 }
 
-export default MainLayout
+export default React.memo(MainLayout)
