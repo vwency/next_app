@@ -5,7 +5,7 @@ import { useModalClose } from '@/hooks/useModalClose'
 import { useLockBodyScroll } from '@/hooks/useLockBodyScroll'
 import { useMountedAnimation } from '@/hooks/useMountedAnimation'
 import CardGrid from '../advertisements/CardGrid'
-import { galleryItems } from './items'
+import { galleryItems, GalleryItem } from './items'
 import DetailedModal from '../../DetailedModal/modal'
 
 interface ModalProps {
@@ -18,9 +18,7 @@ const ModalWithGallery: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   const { handleOverlayClick } = useModalClose({ isOpen, onClose })
   useLockBodyScroll(isOpen)
 
-  const [selectedItem, setSelectedItem] = useState<
-    null | (typeof galleryItems)[0]
-  >(null)
+  const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null)
 
   if (!mounted || (!isOpen && !animating)) return null
 
@@ -64,7 +62,12 @@ const ModalWithGallery: React.FC<ModalProps> = ({ isOpen, onClose }) => {
             items={galleryItems}
             isOpen={isOpen}
             onClose={onClose}
-            onItemClick={(item) => setSelectedItem(item)}
+            onItemClick={(item) =>
+              setSelectedItem({
+                ...item,
+                alt: item.alt || item.description,
+              })
+            }
           />
         </main>
       </div>
@@ -77,7 +80,7 @@ const ModalWithGallery: React.FC<ModalProps> = ({ isOpen, onClose }) => {
         >
           <img
             src={selectedItem.image}
-            alt={selectedItem.alt || selectedItem.description}
+            alt={selectedItem.alt}
             style={{ maxWidth: '100%', display: 'block', margin: '0 auto' }}
           />
           {selectedItem.detailedDescription && (
