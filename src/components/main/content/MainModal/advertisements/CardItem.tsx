@@ -51,7 +51,11 @@ const CardItem: React.FC<CardItemProps> = ({
             height: isHovered ? 'auto' : 0,
             opacity: isHovered ? 1 : 0,
             overflow: isHovered ? 'visible' : 'hidden',
-            padding: isHovered ? '1px' : '0 1px',
+            padding: isHovered ? '0.5rem 10px' : '0 10px',
+            transition: 'opacity 0.3s ease, padding 0.3s ease',
+            boxSizing: 'border-box',
+            wordWrap: 'break-word',
+            overflowWrap: 'break-word',
           }}
         >
           {detailedDescription}

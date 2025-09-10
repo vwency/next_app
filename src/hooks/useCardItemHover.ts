@@ -5,7 +5,7 @@ interface UseCardItemHoverProps {
   imageRef?: React.RefObject<HTMLDivElement | null>
 }
 
-const DESCRIPTION_HEIGHT_REM = 2.8
+const DESCRIPTION_HEIGHT_REM = 3.2
 const DETAILED_PADDING_REM = 1.02
 
 export const useCardItemHover = ({
@@ -24,18 +24,19 @@ export const useCardItemHover = ({
     return rem * rootFontSize
   }
 
-  useEffect(() => {
+  const measureHeights = () => {
     if (imageRef?.current) {
       setImageHeight(imageRef.current.offsetHeight)
     }
-  }, [imageRef?.current])
 
-  useEffect(() => {
     if (detailedRef.current && detailedDescription) {
       const element = detailedRef.current
+
       element.style.visibility = 'hidden'
       element.style.height = 'auto'
       element.style.opacity = '1'
+      element.style.overflow = 'visible'
+      element.style.whiteSpace = 'normal'
       element.style.padding = `${remToPx(DETAILED_PADDING_REM) / 2}px ${remToPx(
         DETAILED_PADDING_REM
       )}px`
@@ -46,7 +47,16 @@ export const useCardItemHover = ({
       element.style.visibility = ''
       element.style.height = '0'
       element.style.opacity = '0'
+      element.style.overflow = 'hidden'
       element.style.padding = `0 ${remToPx(DETAILED_PADDING_REM)}px`
+    }
+  }
+
+  useEffect(() => {
+    measureHeights()
+    window.addEventListener('resize', measureHeights)
+    return () => {
+      window.removeEventListener('resize', measureHeights)
     }
   }, [detailedDescription])
 
