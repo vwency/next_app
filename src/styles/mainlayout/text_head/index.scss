@@ -7,15 +7,31 @@
   text-align: center;
   background: linear-gradient(
     135deg,
-    rgb(255, 198, 149) 0%,
-    rgb(99, 102, 118) 50%,
-    rgb(0, 20, 38) 100%
+    #1e3c72 0%,
+    #2a5298 35%,
+    #00c6ff 70%,
+    #6a00ff 100%
   );
   background-clip: text;
-  background-clip: text;
   -webkit-text-fill-color: transparent;
-  -webkit-text-stroke: 1px rgb(0, 0, 0, 0.2);
   text-stroke: 1px rgb(0, 0, 0, 0.2);
+  -webkit-text-stroke: 1px rgb(0, 0, 0, 0.2);
+  background-size: 400% 400%;
+  animation: gradientShift 8s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .main__fast__text__wrapper {
