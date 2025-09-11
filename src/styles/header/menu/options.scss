@@ -54,8 +54,8 @@
   display: none;
   flex-direction: column;
   justify-content: space-between;
-  width: 28px;
-  height: 22px;
+  width: 24px; /* уменьшено с 28px */
+  height: 18px; /* уменьшено с 22px */
   background: none;
   border: none;
   cursor: pointer;
@@ -64,14 +64,14 @@
 
   .bar {
     width: 100%;
-    height: 3px;
+    height: 2.5px; /* уменьшено с 3px */
     background: #fff;
     border-radius: 2px;
     transition: 0.3s;
   }
 
   &.open .bar:nth-child(1) {
-    transform: rotate(45deg) translate(5px, 6px);
+    transform: rotate(45deg) translate(4px, 4px); /* подправлено под новый размер */
   }
 
   &.open .bar:nth-child(2) {
@@ -79,7 +79,7 @@
   }
 
   &.open .bar:nth-child(3) {
-    transform: rotate(-45deg) translate(6px, -6px);
+    transform: rotate(-45deg) translate(4px, -4px); /* подправлено под новый размер */
   }
 }
 

@@ -5,10 +5,6 @@
   -webkit-tap-highlight-color: rgb(0, 0, 0, 0) !important;
   -webkit-touch-callout: none;
   user-select: none !important;
-  user-select: none;
-  user-select: none;
-  user-select: none;
-  user-select: none !important;
   -webkit-focus-ring-color: transparent;
   outline: none !important;
   justify-content: center;
@@ -26,19 +22,19 @@
 
   &:hover {
     transform: translateY(-1px);
-    box-shadow: 0 8px 25px rgb(105, 255, 59, 0.3);
+    box-shadow: 0 8px 25px rgb(255, 255, 255, 0.3);
     filter: brightness(1.1);
   }
 
   &:active {
     transform: translateY(0);
-    box-shadow: 0 4px 15px rgb(92, 255, 59, 0.2);
+    box-shadow: 0 4px 15px rgb(255, 255, 255, 0.2);
     filter: brightness(0.95);
   }
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgb(163, 255, 59, 0.4);
+    box-shadow: 0 0 0 3px rgb(255, 255, 255, 0.4);
   }
 
   @media (width <= 480px) {
