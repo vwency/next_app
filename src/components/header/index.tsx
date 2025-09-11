@@ -5,7 +5,7 @@ import MainMenu from './menu/menu'
 import '@/styles/header/index.scss'
 
 const MAX_SCROLL_HIDE = 100
-const SCROLL_SHOW_THRESHOLD = 20
+const SCROLL_SHOW_THRESHOLD = 1
 
 const HeaderLayout: React.FC = () => {
   const [translateY, setTranslateY] = useState(0)
