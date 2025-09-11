@@ -1,6 +1,4 @@
-'use client'
-import React, { useEffect, useRef, useState } from 'react'
-import '@/styles/global/background.scss'
+import React, { useEffect, useRef, useCallback, useMemo } from 'react'
 
 type Star = {
   id: number
@@ -8,118 +6,246 @@ type Star = {
   y: number
   z: number
   speed: number
+  initialX: number
+  initialY: number
+  initialRadius: number
+  angle: number
 }
 
-export default function StarsBackground() {
-  const NUM_STARS = 600
-  const Z_MAX = 2000
-  const Z_MIN = 10
-  const SPEED_MIN = 3
-  const SPEED_MAX = 8
-  const RADIUS_MIN = 1400
-  const RADIUS_MAX = 3800
-  const PERSPECTIVE = 1000
-  const STAR_SIZE_MULTIPLIER = 5
-  const STAR_MIN_SIZE = 0.5
-  const OPACITY_DIVIDER = 1500
-  const BRIGHTNESS_DIVIDER = 1200
-  const SCALE_NEAR_Z = 100
-  const SCALE_FACTOR = 50
-
-  const [stars, setStars] = useState<Star[]>([])
+export default function OptimizedStarsBackground() {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const starsRef = useRef<Star[]>([])
   const animationRef = useRef<number | null>(null)
+  const lastTimeRef = useRef<number>(0)
 
-  useEffect(() => {
+  // Constants
+  const config = useMemo(
+    () => ({
+      NUM_STARS: 400, // Reduced for better performance
+      Z_MAX: 2000,
+      Z_MIN: 10,
+      SPEED_MIN: 2,
+      SPEED_MAX: 6,
+      RADIUS_MIN: 1200,
+      RADIUS_MAX: 3000,
+      PERSPECTIVE: 1000,
+      STAR_SIZE_MULTIPLIER: 3,
+      STAR_MIN_SIZE: 0.3,
+      OPACITY_DIVIDER: 1500,
+      BRIGHTNESS_DIVIDER: 1200,
+      SCALE_NEAR_Z: 100,
+      SCALE_FACTOR: 50,
+      TARGET_FPS: 60,
+      FRAME_TIME: 1000 / 60,
+    }),
+    []
+  )
+
+  // Initialize stars once
+  const initializeStars = useCallback(() => {
     const starArray: Star[] = []
-
-    for (let i = 0; i < NUM_STARS; i++) {
+    for (let i = 0; i < config.NUM_STARS; i++) {
       const angle = Math.random() * Math.PI * 2
-      const radius = Math.random() * RADIUS_MAX + RADIUS_MIN
+      const radius =
+        Math.random() * (config.RADIUS_MAX - config.RADIUS_MIN) +
+        config.RADIUS_MIN
       starArray.push({
         id: i,
         x: Math.cos(angle) * radius,
         y: Math.sin(angle) * radius * 0.5,
-        z: Math.random() * Z_MAX + Z_MIN,
-        speed: SPEED_MIN + Math.random() * SPEED_MAX,
+        z: Math.random() * (config.Z_MAX - config.Z_MIN) + config.Z_MIN,
+        speed:
+          config.SPEED_MIN +
+          Math.random() * (config.SPEED_MAX - config.SPEED_MIN),
+        initialX: Math.cos(angle) * radius,
+        initialY: Math.sin(angle) * radius * 0.5,
+        initialRadius: radius,
+        angle: angle,
       })
     }
-    setStars(starArray)
+    starsRef.current = starArray
+  }, [config])
 
-    const animate = () => {
-      setStars((prevStars) =>
-        prevStars.map((star) => {
-          const newZ = star.z - star.speed
-          if (newZ < 1) {
-            const angle = Math.random() * Math.PI * 2
-            const radius = Math.random() * RADIUS_MAX + RADIUS_MIN
-            return {
-              ...star,
-              z: Z_MAX,
-              x: Math.cos(angle) * radius,
-              y: Math.sin(angle) * radius * 0.5,
-              speed: SPEED_MIN + Math.random() * SPEED_MAX,
+  // Optimized render function using canvas
+  const render = useCallback(
+    (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) => {
+      // Clear canvas with gradient background
+      ctx.fillStyle = '#000814'
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+      const centerX = canvas.width / 2
+      const centerY = canvas.height / 2
+      const maxDistance = Math.sqrt(centerX * centerX + centerY * centerY)
+
+      // Batch rendering
+      ctx.save()
+
+      for (let i = 0; i < starsRef.current.length; i++) {
+        const star = starsRef.current[i]
+
+        const scale = config.PERSPECTIVE / (star.z + config.PERSPECTIVE)
+        const translateX = star.x * scale + centerX
+        const translateY = star.y * scale + centerY
+
+        // Skip stars outside viewport
+        if (
+          translateX < -50 ||
+          translateX > canvas.width + 50 ||
+          translateY < -50 ||
+          translateY > canvas.height + 50
+        ) {
+          continue
+        }
+
+        const size = Math.max(
+          scale * config.STAR_SIZE_MULTIPLIER,
+          config.STAR_MIN_SIZE
+        )
+
+        const distanceFromCenterX = Math.abs(translateX - centerX)
+        const distanceFromCenterY = Math.abs(translateY - centerY)
+        const distanceFactor =
+          1 -
+          Math.sqrt(
+            distanceFromCenterX * distanceFromCenterX +
+              distanceFromCenterY * distanceFromCenterY
+          ) /
+            maxDistance
+
+        const opacity = Math.min(
+          1,
+          (distanceFactor * (config.Z_MAX - star.z)) / config.OPACITY_DIVIDER
+        )
+        const brightness = Math.min(
+          1,
+          (config.Z_MAX - star.z) / config.BRIGHTNESS_DIVIDER
+        )
+
+        if (opacity < 0.05) continue
+
+        // Draw star
+        ctx.globalAlpha = opacity
+        ctx.fillStyle = `rgb(255, 255, 255)`
+
+        ctx.beginPath()
+        ctx.arc(translateX, translateY, size / 2, 0, Math.PI * 2)
+        ctx.fill()
+
+        // Add glow effect for brighter stars
+        if (brightness > 0.3) {
+          ctx.globalAlpha = opacity * brightness * 0.3
+          ctx.fillStyle = `rgb(255, 220, 150)`
+          ctx.beginPath()
+          ctx.arc(translateX, translateY, size * 1.5, 0, Math.PI * 2)
+          ctx.fill()
+        }
+      }
+
+      ctx.restore()
+    },
+    [config]
+  )
+
+  // Optimized animation loop with frame limiting
+  const animate = useCallback(
+    (currentTime: number) => {
+      const deltaTime = currentTime - lastTimeRef.current
+
+      if (deltaTime >= config.FRAME_TIME) {
+        const canvas = canvasRef.current
+        const ctx = canvas?.getContext('2d')
+
+        if (canvas && ctx) {
+          // Update star positions
+          for (let i = 0; i < starsRef.current.length; i++) {
+            const star = starsRef.current[i]
+            star.z -= star.speed
+
+            if (star.z < 1) {
+              // Reset star to back
+              const angle = Math.random() * Math.PI * 2
+              const radius =
+                Math.random() * (config.RADIUS_MAX - config.RADIUS_MIN) +
+                config.RADIUS_MIN
+              star.z = config.Z_MAX
+              star.x = Math.cos(angle) * radius
+              star.y = Math.sin(angle) * radius * 0.5
+              star.speed =
+                config.SPEED_MIN +
+                Math.random() * (config.SPEED_MAX - config.SPEED_MIN)
+              star.angle = angle
+              star.initialRadius = radius
             }
           }
-          return { ...star, z: newZ }
-        })
-      )
-      animationRef.current = requestAnimationFrame(animate)
-    }
 
-    animationRef.current = requestAnimationFrame(animate)
-    return () => {
-      if (animationRef.current) cancelAnimationFrame(animationRef.current)
+          render(ctx, canvas)
+        }
+
+        lastTimeRef.current = currentTime
+      }
+
+      animationRef.current = requestAnimationFrame(animate)
+    },
+    [config, render]
+  )
+
+  // Handle canvas resize
+  const handleResize = useCallback(() => {
+    const canvas = canvasRef.current
+    if (canvas) {
+      canvas.width = window.innerWidth
+      canvas.height = window.innerHeight
     }
   }, [])
 
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+
+    // Set initial canvas size
+    canvas.width = window.innerWidth
+    canvas.height = window.innerHeight
+
+    // Initialize stars
+    initializeStars()
+
+    // Start animation
+    animationRef.current = requestAnimationFrame(animate)
+
+    // Add resize listener
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current)
+      }
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [animate, handleResize, initializeStars])
+
   return (
-    <div className="stars">
-      {stars.map((star) => {
-        const scale = PERSPECTIVE / (star.z + PERSPECTIVE)
-        const translateX = star.x * scale + window.innerWidth / 2
-        const translateY = star.y * scale + window.innerHeight / 2
-        const size = Math.max(scale * STAR_SIZE_MULTIPLIER, STAR_MIN_SIZE)
-
-        const distanceFromCenterX = Math.abs(translateX - window.innerWidth / 2)
-        const distanceFromCenterY = Math.abs(
-          translateY - window.innerHeight / 2
-        )
-        const maxDistance = Math.sqrt(
-          (window.innerWidth / 2) ** 2 + (window.innerHeight / 2) ** 2
-        )
-        const distanceFactor =
-          1 -
-          Math.sqrt(distanceFromCenterX ** 2 + distanceFromCenterY ** 2) /
-            maxDistance
-        const opacity = Math.min(
-          1,
-          (distanceFactor * (Z_MAX - star.z)) / OPACITY_DIVIDER
-        )
-        const brightness = Math.min(1, (Z_MAX - star.z) / BRIGHTNESS_DIVIDER)
-
-        if (opacity < 0.05) return null
-
-        return (
-          <div
-            key={star.id}
-            className="star"
-            style={{
-              left: `${translateX - size / 2}px`,
-              top: `${translateY - size / 2}px`,
-              width: `${size}px`,
-              height: `${size}px`,
-              opacity,
-              boxShadow: `0 0 ${size * 2}px rgba(255, 255, 255, ${
-                brightness * opacity
-              })`,
-              transform:
-                star.z < SCALE_NEAR_Z
-                  ? `scale(${1 + (SCALE_NEAR_Z - star.z) / SCALE_FACTOR})`
-                  : 'scale(1)',
-            }}
-          />
-        )
-      })}
+    <div
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        pointerEvents: 'none',
+        overflow: 'hidden',
+        zIndex: -1,
+        background: 'radial-gradient(circle, #000814 0%, #000 80%)',
+      }}
+    >
+      <canvas
+        ref={canvasRef}
+        style={{
+          display: 'block',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+        }}
+      />
     </div>
   )
 }
