@@ -7,7 +7,11 @@ import '@/styles/header/index.scss'
 const MAX_SCROLL_HIDE = 100
 const SCROLL_SHOW_THRESHOLD = 1
 
-const HeaderLayout: React.FC = () => {
+interface HeaderLayoutProps {
+  contentRef: React.RefObject<HTMLDivElement | null>
+}
+
+const HeaderLayout: React.FC<HeaderLayoutProps> = ({ contentRef }) => {
   const [translateY, setTranslateY] = useState(0)
   const lastScrollY = useRef(0)
   const accumulatedUpScroll = useRef(0)
@@ -52,7 +56,7 @@ const HeaderLayout: React.FC = () => {
         transition: 'transform 0.1s linear',
       }}
     >
-      <MainMenu />
+      <MainMenu contentRef={contentRef} />
     </div>
   )
 }
