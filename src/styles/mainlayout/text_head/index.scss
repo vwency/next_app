@@ -1,24 +1,49 @@
 .fast_text {
-  font-family: 'Clash Grotesk';
+  font-family: Orbitron, sans-serif;
   font-size: 5rem;
-  word-wrap: break-word;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  letter-spacing: 0.1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.15rem;
+  text-align: center;
+
+  /* Новый градиент */
   background: linear-gradient(
-    90deg,
-    #ff3bff 0%,
-    #ecbfbf 38.02%,
-    #5c24ff 75.83%,
-    #d94fd5 100%
+    135deg,
+    #1e3c72 0%,
+    /* темно-синий */ #2a5298 35%,
+    /* синий */ #00c6ff 70%,
+    /* бирюзовый */ #6a00ff 100% /* фиолетовый */
   );
   background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-align: center;
+
+  /* Контур для объема */
+  text-stroke: 1px rgb(0, 0, 0, 0.2);
+  -webkit-text-stroke: 1px rgb(0, 0, 0, 0.2);
+
+  /* Плавная анимация градиента */
+  background-size: 400% 400%;
+  animation: gradientShift 8s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .main__fast__text__wrapper {
   display: flex;
   justify-content: center;
+  align-items: center;
+  padding: 1rem;
 }

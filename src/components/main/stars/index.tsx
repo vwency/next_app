@@ -18,10 +18,9 @@ export default function OptimizedStarsBackground() {
   const animationRef = useRef<number | null>(null)
   const lastTimeRef = useRef<number>(0)
 
-  // Constants
   const config = useMemo(
     () => ({
-      NUM_STARS: 400, // Reduced for better performance
+      NUM_STARS: 800, // Reduced for better performance
       Z_MAX: 2000,
       Z_MIN: 10,
       SPEED_MIN: 2,
@@ -41,7 +40,6 @@ export default function OptimizedStarsBackground() {
     []
   )
 
-  // Initialize stars once
   const initializeStars = useCallback(() => {
     const starArray: Star[] = []
     for (let i = 0; i < config.NUM_STARS; i++) {
@@ -66,28 +64,22 @@ export default function OptimizedStarsBackground() {
     starsRef.current = starArray
   }, [config])
 
-  // Optimized render function using canvas
   const render = useCallback(
     (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) => {
-      // Clear canvas with gradient background
       ctx.fillStyle = '#000814'
       ctx.fillRect(0, 0, canvas.width, canvas.height)
 
       const centerX = canvas.width / 2
       const centerY = canvas.height / 2
       const maxDistance = Math.sqrt(centerX * centerX + centerY * centerY)
-
-      // Batch rendering
       ctx.save()
 
       for (let i = 0; i < starsRef.current.length; i++) {
         const star = starsRef.current[i]
-
         const scale = config.PERSPECTIVE / (star.z + config.PERSPECTIVE)
         const translateX = star.x * scale + centerX
         const translateY = star.y * scale + centerY
 
-        // Skip stars outside viewport
         if (
           translateX < -50 ||
           translateX > canvas.width + 50 ||
@@ -123,7 +115,6 @@ export default function OptimizedStarsBackground() {
 
         if (opacity < 0.05) continue
 
-        // Draw star
         ctx.globalAlpha = opacity
         ctx.fillStyle = `rgb(255, 255, 255)`
 
@@ -131,7 +122,6 @@ export default function OptimizedStarsBackground() {
         ctx.arc(translateX, translateY, size / 2, 0, Math.PI * 2)
         ctx.fill()
 
-        // Add glow effect for brighter stars
         if (brightness > 0.3) {
           ctx.globalAlpha = opacity * brightness * 0.3
           ctx.fillStyle = `rgb(255, 220, 150)`
@@ -146,7 +136,6 @@ export default function OptimizedStarsBackground() {
     [config]
   )
 
-  // Optimized animation loop with frame limiting
   const animate = useCallback(
     (currentTime: number) => {
       const deltaTime = currentTime - lastTimeRef.current
@@ -156,13 +145,11 @@ export default function OptimizedStarsBackground() {
         const ctx = canvas?.getContext('2d')
 
         if (canvas && ctx) {
-          // Update star positions
           for (let i = 0; i < starsRef.current.length; i++) {
             const star = starsRef.current[i]
             star.z -= star.speed
 
             if (star.z < 1) {
-              // Reset star to back
               const angle = Math.random() * Math.PI * 2
               const radius =
                 Math.random() * (config.RADIUS_MAX - config.RADIUS_MIN) +
@@ -189,7 +176,6 @@ export default function OptimizedStarsBackground() {
     [config, render]
   )
 
-  // Handle canvas resize
   const handleResize = useCallback(() => {
     const canvas = canvasRef.current
     if (canvas) {
@@ -202,23 +188,15 @@ export default function OptimizedStarsBackground() {
     const canvas = canvasRef.current
     if (!canvas) return
 
-    // Set initial canvas size
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
 
-    // Initialize stars
     initializeStars()
-
-    // Start animation
     animationRef.current = requestAnimationFrame(animate)
-
-    // Add resize listener
     window.addEventListener('resize', handleResize)
 
     return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current)
-      }
+      if (animationRef.current) cancelAnimationFrame(animationRef.current)
       window.removeEventListener('resize', handleResize)
     }
   }, [animate, handleResize, initializeStars])
