@@ -7,15 +7,6 @@
   z-index: 1000;
   background: rgb(0, 0, 0, 0.9);
   backdrop-filter: blur(10px);
-  transition: transform 0.3s ease-in-out;
   display: flex;
   justify-content: center;
-
-  &.visible {
-    transform: translateY(0);
-  }
-
-  &.hidden {
-    transform: translateY(-100%);
-  }
 }

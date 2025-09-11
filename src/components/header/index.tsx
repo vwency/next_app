@@ -4,41 +4,53 @@ import React, { useState, useEffect, useRef } from 'react'
 import MainMenu from './menu/menu'
 import '@/styles/header/index.scss'
 
-const SCROLL_HIDE_THRESHOLD = 1
+const MAX_SCROLL_HIDE = 100
+const SCROLL_SHOW_THRESHOLD = 20
 
 const HeaderLayout: React.FC = () => {
-  const [isVisible, setIsVisible] = useState(true)
+  const [translateY, setTranslateY] = useState(0)
   const lastScrollY = useRef(0)
+  const accumulatedUpScroll = useRef(0)
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY
       const diff = currentScrollY - lastScrollY.current
 
-      let newVisibility = isVisible
-
-      if (currentScrollY <= SCROLL_HIDE_THRESHOLD) {
-        newVisibility = true
-      } else if (diff > 0) {
-        newVisibility = false
-      } else if (diff < 0) {
-        newVisibility = true
+      if (diff > 0) {
+        accumulatedUpScroll.current = 0
+      } else {
+        accumulatedUpScroll.current -= diff
       }
 
-      if (newVisibility !== isVisible) {
-        setIsVisible(newVisibility)
+      let newTranslateY = translateY
+
+      if (diff > 0) {
+        newTranslateY += diff
+      } else if (accumulatedUpScroll.current >= SCROLL_SHOW_THRESHOLD) {
+        newTranslateY += diff
       }
 
+      if (newTranslateY > MAX_SCROLL_HIDE) newTranslateY = MAX_SCROLL_HIDE
+      if (newTranslateY < 0) newTranslateY = 0
+
+      setTranslateY(newTranslateY)
       lastScrollY.current = currentScrollY
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [isVisible])
+  }, [translateY])
+
+  const translatePercent = (translateY / MAX_SCROLL_HIDE) * 100
 
   return (
     <div
-      className={`header_wrapper no-select ${isVisible ? 'visible' : 'hidden'}`}
+      className="header_wrapper no-select"
+      style={{
+        transform: `translateY(-${translatePercent}%)`,
+        transition: 'transform 0.1s linear',
+      }}
     >
       <MainMenu />
     </div>

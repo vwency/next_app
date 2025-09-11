@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import '@/styles/menu/index.scss'
+import '@/styles/header/menu/index.scss'
 
 const MainMenu: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false)

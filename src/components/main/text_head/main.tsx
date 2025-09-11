@@ -1,5 +1,5 @@
 import React from 'react'
-import '@/styles/menu/index.scss'
+import '@/styles/header/menu/index.scss'
 import FastText from './fast_text'
 
 const textHeadContent = (
