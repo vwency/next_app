@@ -5,9 +5,8 @@
   right: 0;
   width: 100vw;
   z-index: 1000;
-  background: rgb(0, 0, 0, 0.9);
   backdrop-filter: blur(10px);
-  opacity: 80%;
+  background-color: rgb(0, 0, 0, 0.75);
   display: flex;
   justify-content: center;
 }
