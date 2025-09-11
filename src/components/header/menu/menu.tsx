@@ -1,25 +1,13 @@
 'use client'
 
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState } from 'react'
 import '@/styles/menu/index.scss'
 
-interface MainMenuProps {
-  contentRef: React.RefObject<HTMLDivElement | null>
-}
-
-const MainMenu: React.FC<MainMenuProps> = ({ contentRef }) => {
+const MainMenu: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false)
-  const menuRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (menuRef.current && contentRef?.current) {
-      const menuHeight = isOpen ? menuRef.current.scrollHeight : 0
-      contentRef.current.style.marginTop = `${menuHeight}px`
-    }
-  }, [isOpen, contentRef])
 
   return (
-    <div className="menu_wrapper no-select" ref={menuRef}>
+    <div className="menu_wrapper no-select">
       <div className="menu__logo">
         <div className="menu__logo__text">КиноАфиша</div>
       </div>
