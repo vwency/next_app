@@ -20,7 +20,7 @@ export default function OptimizedStarsBackground() {
 
   const config = useMemo(
     () => ({
-      NUM_STARS: 800, // Reduced for better performance
+      NUM_STARS: 800,
       Z_MAX: 2000,
       Z_MIN: 10,
       SPEED_MIN: 2,
