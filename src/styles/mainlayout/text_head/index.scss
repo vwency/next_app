@@ -13,7 +13,6 @@
     #6a00ff 100%
   );
   background-clip: text;
-  background-clip: text;
   -webkit-text-fill-color: transparent;
   -webkit-text-stroke: 1px rgb(0, 0, 0, 0.2);
   background-size: 400% 400%;
@@ -43,7 +42,7 @@
   }
 
   100% {
-    filter: brightness(0.5) saturate(0.7);
+    filter: brightness(1) saturate(1);
   }
 }
 
