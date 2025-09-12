@@ -17,11 +17,12 @@
   -webkit-text-stroke: 1px rgb(0, 0, 0, 0.2);
   background-size: 400% 400%;
   animation: gradientShift 8s ease infinite;
+  background-position: 50% 50%;
 }
 
 @keyframes gradientShift {
   0% {
-    background-position: 0% 50%;
+    background-position: 50% 50%;
   }
 
   50% {
@@ -29,7 +30,7 @@
   }
 
   100% {
-    background-position: 0% 50%;
+    background-position: 50% 50%;
   }
 }
 
