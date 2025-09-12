@@ -16,9 +16,7 @@
   -webkit-text-fill-color: transparent;
   -webkit-text-stroke: 1px rgb(0, 0, 0, 0.2);
   background-size: 400% 400%;
-  animation:
-    gradientShift 8s ease infinite,
-    brightnessShift 4s ease-in-out infinite;
+  animation: gradientShift 8s ease infinite;
 }
 
 @keyframes gradientShift {
@@ -32,21 +30,6 @@
 
   100% {
     background-position: 0% 50%;
-  }
-}
-
-/* Новая анимация яркости */
-@keyframes brightnessShift {
-  0% {
-    filter: brightness(1.5);
-  }
-
-  50% {
-    filter: brightness(0.5);
-  }
-
-  100% {
-    filter: brightness(1.5);
   }
 }
 
