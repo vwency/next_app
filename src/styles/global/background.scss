@@ -11,24 +11,30 @@ body {
   position: relative;
 }
 
-.stars {
+.stars-wrapper {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
   pointer-events: none;
-  overflow: visible;
+  overflow: hidden;
   z-index: -1;
-  background: radial-gradient(circle, #000814 0%, #000 80%);
+  background-color: black;
+
+  // background: radial-gradient(
+  //   ellipse at center,
+  //   #001122 0%,
+  //   #000814 40%,
+  //   #000 100%
+  // );
 }
 
-.star {
+canvas.stars-canvas {
+  display: block;
   position: absolute;
-  background: rgb(255, 255, 255);
-  border-radius: 50%;
-  will-change: transform, opacity;
-  transform-origin: center;
-  box-shadow: 0 0 8px 2px rgb(255, 180, 100, 0.7);
-  filter: blur(1.2px);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }

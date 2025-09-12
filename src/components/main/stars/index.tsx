@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useCallback } from 'react'
 import { Star } from '@/types'
 import { initializeStars } from './init'
 import { animate } from './animate'
+import '@/styles/global/index.scss'
 
 export default function OptimizedStarsBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -37,29 +38,8 @@ export default function OptimizedStarsBackground() {
   }, [handleResize])
 
   return (
-    <div
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100vw',
-        height: '100vh',
-        pointerEvents: 'none',
-        overflow: 'hidden',
-        zIndex: -1,
-        background:
-          'radial-gradient(ellipse at center, #001122 0%, #000814 40%, #000 100%)',
-      }}
-    >
-      <canvas
-        ref={canvasRef}
-        style={{
-          display: 'block',
-          position: 'absolute',
-          top: 0,
-          left: 0,
-        }}
-      />
+    <div className="stars-wrapper">
+      <canvas ref={canvasRef} className="stars-canvas" />
     </div>
   )
 }
