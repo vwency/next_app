@@ -1,21 +1,19 @@
-:root {
-  --star-base-color: 255, 255, 255;
-  --star-glow-color-1: 255, 230, 180;
-  --star-glow-color-2: 255, 200, 100;
-  --star-background-color: #000;
-  --star-glow-opacity-multiplier: 0.4;
-  --star-glow-scale-factor: 0.5;
-  --star-min-opacity: 0.25;
-}
-
 // :root {
 //   --star-base-color: 255, 255, 255;
 //   --star-glow-color-1: 255, 230, 180;
 //   --star-glow-color-2: 255, 200, 100;
-//   --star-background-color: #000814;
-
+//   --star-background-color: #000;
 //   --star-glow-opacity-multiplier: 0.4;
 //   --star-glow-scale-factor: 0.5;
-
 //   --star-min-opacity: 0.25;
 // }
+
+:root {
+  --star-base-color: 255, 255, 255;
+  --star-glow-color-1: 255, 230, 180;
+  --star-glow-color-2: 255, 200, 100;
+  --star-background-color: #000814;
+  --star-glow-opacity-multiplier: 0.4;
+  --star-glow-scale-factor: 0.5;
+  --star-min-opacity: 0.25;
+}

@@ -13,10 +13,14 @@
     #6a00ff 100%
   );
   background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   -webkit-text-stroke: 1px rgb(0, 0, 0, 0.2);
   background-size: 400% 400%;
-  animation: gradientShift 8s ease infinite;
+  filter: brightness(1.8) saturate(1.4);
+  animation:
+    gradientShift 8s ease infinite,
+    fadeFromBright 3s ease-out 0.5s forwards;
 }
 
 @keyframes gradientShift {
@@ -30,6 +34,16 @@
 
   100% {
     background-position: 0% 50%;
+  }
+}
+
+@keyframes fadeFromBright {
+  0% {
+    filter: brightness(1.8) saturate(1.4);
+  }
+
+  100% {
+    filter: brightness(0.5) saturate(0.7);
   }
 }
 
