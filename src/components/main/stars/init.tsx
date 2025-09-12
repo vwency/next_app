@@ -12,7 +12,7 @@ export const initializeStars = (starsRef: React.MutableRefObject<Star[]>) => {
     starArray.push({
       id: i,
       x: Math.cos(angle) * radius,
-      y: Math.sin(angle) * radius * 0.5,
+      y: Math.sin(angle) * radius * 0.6,
       z:
         Math.random() * (STAR_CONFIG.Z_MAX - STAR_CONFIG.Z_MIN) +
         STAR_CONFIG.Z_MIN,
@@ -20,7 +20,7 @@ export const initializeStars = (starsRef: React.MutableRefObject<Star[]>) => {
         STAR_CONFIG.SPEED_MIN +
         Math.random() * (STAR_CONFIG.SPEED_MAX - STAR_CONFIG.SPEED_MIN),
       initialX: Math.cos(angle) * radius,
-      initialY: Math.sin(angle) * radius * 0.5,
+      initialY: Math.sin(angle) * radius * 0.6,
       initialRadius: radius,
       angle: angle,
     })

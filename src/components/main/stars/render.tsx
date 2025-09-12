@@ -27,34 +27,38 @@ export const render = (
 
     const distanceFromCenterX = Math.abs(translateX - centerX)
     const distanceFromCenterY = Math.abs(translateY - centerY)
-    const distanceFactor =
-      1 -
-      Math.sqrt(
-        distanceFromCenterX * distanceFromCenterX +
-          distanceFromCenterY * distanceFromCenterY
-      ) /
-        maxDistance
-
-    let opacity = Math.min(
-      1,
-      (distanceFactor * (STAR_CONFIG.Z_MAX - star.z)) /
-        STAR_CONFIG.OPACITY_DIVIDER
+    const distanceFromCenter = Math.sqrt(
+      distanceFromCenterX * distanceFromCenterX +
+        distanceFromCenterY * distanceFromCenterY
     )
+    const distanceFactor = 1 - distanceFromCenter / maxDistance
+
+    const zFactor = (STAR_CONFIG.Z_MAX - star.z) / STAR_CONFIG.Z_MAX
+    const scaleFactor = Math.pow(scale, 0.3)
+
+    let opacity =
+      STAR_CONFIG.OPACITY_BASE +
+      distanceFactor *
+        STAR_CONFIG.OPACITY_DISTANCE_FACTOR *
+        zFactor *
+        scaleFactor
+
+    const brightness =
+      STAR_CONFIG.BRIGHTNESS_BASE +
+      zFactor * STAR_CONFIG.BRIGHTNESS_DISTANCE_FACTOR * scaleFactor
 
     if (
-      translateX >= -50 &&
-      translateX <= canvas.width + 50 &&
-      translateY >= -50 &&
-      translateY <= canvas.height + 50
+      translateX >= -100 &&
+      translateX <= canvas.width + 100 &&
+      translateY >= -100 &&
+      translateY <= canvas.height + 100
     ) {
-      opacity = Math.max(opacity, 0.15)
+      opacity = Math.max(opacity, 0.25)
     }
-    const brightness = Math.min(
-      1,
-      (STAR_CONFIG.Z_MAX - star.z) / STAR_CONFIG.BRIGHTNESS_DIVIDER
-    )
 
-    if (opacity < 0.02) continue
+    opacity = Math.min(opacity, 1)
+
+    if (opacity < 0.03) continue
 
     ctx.globalAlpha = opacity
     ctx.fillStyle = `rgb(255, 255, 255)`
@@ -62,12 +66,23 @@ export const render = (
     ctx.arc(translateX, translateY, size / 2, 0, Math.PI * 2)
     ctx.fill()
 
-    if (brightness > 0.3) {
-      ctx.globalAlpha = opacity * brightness * 0.3
-      ctx.fillStyle = `rgb(255, 220, 150)`
+    if (brightness > 0.4 && scale > 0.3) {
+      const glowSize = size * (1.8 + scaleFactor * 0.5)
+      const glowOpacity = opacity * brightness * 0.4 * scaleFactor
+
+      ctx.globalAlpha = glowOpacity
+      ctx.fillStyle = `rgb(255, 230, 180)`
       ctx.beginPath()
-      ctx.arc(translateX, translateY, size * 1.5, 0, Math.PI * 2)
+      ctx.arc(translateX, translateY, glowSize, 0, Math.PI * 2)
       ctx.fill()
+
+      if (scale > 0.8) {
+        ctx.globalAlpha = glowOpacity * 0.6
+        ctx.fillStyle = `rgb(255, 200, 100)`
+        ctx.beginPath()
+        ctx.arc(translateX, translateY, glowSize * 1.5, 0, Math.PI * 2)
+        ctx.fill()
+      }
     }
   }
 

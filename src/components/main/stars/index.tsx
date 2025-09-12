@@ -47,7 +47,8 @@ export default function OptimizedStarsBackground() {
         pointerEvents: 'none',
         overflow: 'hidden',
         zIndex: -1,
-        background: 'radial-gradient(circle, #000814 0%, #000 80%)',
+        background:
+          'radial-gradient(ellipse at center, #001122 0%, #000814 40%, #000 100%)',
       }}
     >
       <canvas

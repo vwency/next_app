@@ -38,14 +38,14 @@ export const animate = (
             (translateY - centerY) * (translateY - centerY)
         )
 
-        if (star.z < 1 || distanceFromCenter > screenDiagonal * 3) {
+        if (star.z < 1 || distanceFromCenter > screenDiagonal * 2.5) {
           const angle = Math.random() * Math.PI * 2
           const radius =
             Math.random() * (STAR_CONFIG.RADIUS_MAX - STAR_CONFIG.RADIUS_MIN) +
             STAR_CONFIG.RADIUS_MIN
           star.z = STAR_CONFIG.Z_MAX
           star.x = Math.cos(angle) * radius
-          star.y = Math.sin(angle) * radius * 0.5
+          star.y = Math.sin(angle) * radius * 0.6
           star.speed =
             STAR_CONFIG.SPEED_MIN +
             Math.random() * (STAR_CONFIG.SPEED_MAX - STAR_CONFIG.SPEED_MIN)
