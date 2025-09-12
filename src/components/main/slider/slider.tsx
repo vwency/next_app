@@ -3,7 +3,7 @@ import React, { memo, useMemo } from 'react'
 import Image from 'next/image'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useAutoEmblaCarousel } from '@/hooks'
-import '@/styles/slider/index.scss'
+import '@/styles/mainlayout/slider/index.scss'
 
 const SLIDER_IMAGES = [
   'https://images.unsplash.com/photo-1752606402449-0c14a2d6af70?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0',

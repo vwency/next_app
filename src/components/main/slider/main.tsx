@@ -2,7 +2,7 @@
 
 import React from 'react'
 import Slider from './slider'
-import '@/styles/slider/index.scss'
+import '@/styles/mainlayout/slider/index.scss'
 
 const MainSliderContent = (
   <div className="slider__wrapper">
