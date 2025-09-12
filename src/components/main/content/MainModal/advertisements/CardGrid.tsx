@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
 import CardItem, { CardItemProps } from './CardItem'
-import '@/styles/card/grid.scss'
+import '@/styles/mainlayout/card/grid.scss'
 
 interface CardGridProps {
   items: CardItemProps[]

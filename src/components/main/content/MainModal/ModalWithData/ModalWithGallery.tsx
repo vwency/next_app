@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useMemo } from 'react'
 import { createPortal } from 'react-dom'
-import '@/styles/card/index.scss'
+import '@/styles/mainlayout/card/index.scss'
 import { useLockBodyScroll } from '@/hooks/useLockBodyScroll'
 import { useMountedAnimation } from '@/hooks/useMountedAnimation'
 import CardGrid from '../advertisements/CardGrid'

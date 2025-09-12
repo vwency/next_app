@@ -1,5 +1,5 @@
 import React, { useRef, useMemo, useCallback } from 'react'
-import '@/styles/card/items.scss'
+import '@/styles/mainlayout/card/items.scss'
 import { useCardItemHover } from '@/hooks'
 
 export interface CardItemProps {

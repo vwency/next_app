@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
-import '@/styles/DetaliedModal/index.scss'
+import '@/styles/mainlayout/DetaliedModal/index.scss'
 
 interface ModalProps {
   isOpen: boolean
