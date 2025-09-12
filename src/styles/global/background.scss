@@ -18,7 +18,7 @@ body {
   width: 100vw;
   height: 100vh;
   pointer-events: none;
-  overflow: hidden;
+  overflow: visible;
   z-index: -1;
   background: radial-gradient(circle, #000814 0%, #000 80%);
 }
