@@ -1,9 +1,4 @@
-export interface GalleryItem {
-  image: string
-  alt: string
-  description: string
-  detailedDescription?: string
-}
+import { GalleryItem } from '@/interfaces'
 
 export const galleryItems: GalleryItem[] = [
   {

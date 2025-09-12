@@ -1,13 +1,7 @@
 import React, { useRef, useMemo, useCallback } from 'react'
 import '@/styles/mainlayout/card/items.scss'
 import { useCardItemHover } from '@/hooks'
-
-export interface CardItemProps {
-  image: string
-  alt?: string
-  description: string
-  detailedDescription?: string
-}
+import { CardItemProps } from '@/interfaces'
 
 const CardItem: React.FC<CardItemProps> = ({
   image,

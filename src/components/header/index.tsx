@@ -3,13 +3,8 @@
 import React, { useState, useEffect, useRef } from 'react'
 import MainMenu from './menu/menu'
 import '@/styles/header/index.scss'
-
-const MAX_SCROLL_HIDE = 100
-const SCROLL_SHOW_THRESHOLD = 1
-
-interface HeaderLayoutProps {
-  contentRef: React.RefObject<HTMLDivElement | null>
-}
+import { HeaderLayoutProps } from '@/consts'
+import { MAX_SCROLL_HIDE, SCROLL_SHOW_THRESHOLD } from '@/consts'
 
 const HeaderLayout: React.FC<HeaderLayoutProps> = ({ contentRef }) => {
   const [translateY, setTranslateY] = useState(0)

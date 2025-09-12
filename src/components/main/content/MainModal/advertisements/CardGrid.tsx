@@ -1,11 +1,8 @@
 import React, { useCallback, useMemo } from 'react'
-import CardItem, { CardItemProps } from './CardItem'
+import CardItem from './CardItem'
 import '@/styles/mainlayout/card/grid.scss'
-
-interface CardGridProps {
-  items: CardItemProps[]
-  onItemClick?: (item: CardItemProps) => void
-}
+import { CardGridProps } from '@/interfaces'
+import { CardItemProps } from '@/interfaces'
 
 const CardGrid: React.FC<CardGridProps> = ({ items, onItemClick }) => {
   const handleItemClick = useCallback(

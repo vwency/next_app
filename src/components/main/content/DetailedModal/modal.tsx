@@ -1,14 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import '@/styles/mainlayout/DetaliedModal/index.scss'
-
-interface ModalProps {
-  isOpen: boolean
-  onClose: () => void
-  title?: string
-  children?: React.ReactNode
-  portalRootId?: string
-}
+import { ModalProps } from '@/interfaces'
 
 const DetailedModal: React.FC<ModalProps> = ({
   isOpen,

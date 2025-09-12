@@ -2,10 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react'
 import '@/styles/header/menu/index.scss'
-
-interface MainMenuProps {
-  contentRef: React.RefObject<HTMLDivElement | null>
-}
+import { MainMenuProps } from '@/interfaces'
 
 const MainMenu: React.FC<MainMenuProps> = ({ contentRef }) => {
   const [isOpen, setIsOpen] = useState(false)

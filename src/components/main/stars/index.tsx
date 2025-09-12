@@ -1,16 +1,6 @@
-import React, { useEffect, useRef, useCallback, useMemo } from 'react'
-
-type Star = {
-  id: number
-  x: number
-  y: number
-  z: number
-  speed: number
-  initialX: number
-  initialY: number
-  initialRadius: number
-  angle: number
-}
+import React, { useEffect, useRef, useCallback } from 'react'
+import { Star } from '@/types'
+import { STAR_CONFIG } from '@/consts'
 
 export default function OptimizedStarsBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -18,43 +8,23 @@ export default function OptimizedStarsBackground() {
   const animationRef = useRef<number | null>(null)
   const lastTimeRef = useRef<number>(0)
 
-  const config = useMemo(
-    () => ({
-      NUM_STARS: 800,
-      Z_MAX: 2000,
-      Z_MIN: 10,
-      SPEED_MIN: 2,
-      SPEED_MAX: 6,
-      RADIUS_MIN: 1200,
-      RADIUS_MAX: 3000,
-      PERSPECTIVE: 1000,
-      STAR_SIZE_MULTIPLIER: 3,
-      STAR_MIN_SIZE: 0.3,
-      OPACITY_DIVIDER: 1500,
-      BRIGHTNESS_DIVIDER: 1200,
-      SCALE_NEAR_Z: 100,
-      SCALE_FACTOR: 50,
-      TARGET_FPS: 60,
-      FRAME_TIME: 1000 / 60,
-    }),
-    []
-  )
-
   const initializeStars = useCallback(() => {
     const starArray: Star[] = []
-    for (let i = 0; i < config.NUM_STARS; i++) {
+    for (let i = 0; i < STAR_CONFIG.NUM_STARS; i++) {
       const angle = Math.random() * Math.PI * 2
       const radius =
-        Math.random() * (config.RADIUS_MAX - config.RADIUS_MIN) +
-        config.RADIUS_MIN
+        Math.random() * (STAR_CONFIG.RADIUS_MAX - STAR_CONFIG.RADIUS_MIN) +
+        STAR_CONFIG.RADIUS_MIN
       starArray.push({
         id: i,
         x: Math.cos(angle) * radius,
         y: Math.sin(angle) * radius * 0.5,
-        z: Math.random() * (config.Z_MAX - config.Z_MIN) + config.Z_MIN,
+        z:
+          Math.random() * (STAR_CONFIG.Z_MAX - STAR_CONFIG.Z_MIN) +
+          STAR_CONFIG.Z_MIN,
         speed:
-          config.SPEED_MIN +
-          Math.random() * (config.SPEED_MAX - config.SPEED_MIN),
+          STAR_CONFIG.SPEED_MIN +
+          Math.random() * (STAR_CONFIG.SPEED_MAX - STAR_CONFIG.SPEED_MIN),
         initialX: Math.cos(angle) * radius,
         initialY: Math.sin(angle) * radius * 0.5,
         initialRadius: radius,
@@ -62,7 +32,7 @@ export default function OptimizedStarsBackground() {
       })
     }
     starsRef.current = starArray
-  }, [config])
+  }, [])
 
   const render = useCallback(
     (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) => {
@@ -76,7 +46,8 @@ export default function OptimizedStarsBackground() {
 
       for (let i = 0; i < starsRef.current.length; i++) {
         const star = starsRef.current[i]
-        const scale = config.PERSPECTIVE / (star.z + config.PERSPECTIVE)
+        const scale =
+          STAR_CONFIG.PERSPECTIVE / (star.z + STAR_CONFIG.PERSPECTIVE)
         const translateX = star.x * scale + centerX
         const translateY = star.y * scale + centerY
 
@@ -90,8 +61,8 @@ export default function OptimizedStarsBackground() {
         }
 
         const size = Math.max(
-          scale * config.STAR_SIZE_MULTIPLIER,
-          config.STAR_MIN_SIZE
+          scale * STAR_CONFIG.STAR_SIZE_MULTIPLIER,
+          STAR_CONFIG.STAR_MIN_SIZE
         )
 
         const distanceFromCenterX = Math.abs(translateX - centerX)
@@ -106,11 +77,12 @@ export default function OptimizedStarsBackground() {
 
         const opacity = Math.min(
           1,
-          (distanceFactor * (config.Z_MAX - star.z)) / config.OPACITY_DIVIDER
+          (distanceFactor * (STAR_CONFIG.Z_MAX - star.z)) /
+            STAR_CONFIG.OPACITY_DIVIDER
         )
         const brightness = Math.min(
           1,
-          (config.Z_MAX - star.z) / config.BRIGHTNESS_DIVIDER
+          (STAR_CONFIG.Z_MAX - star.z) / STAR_CONFIG.BRIGHTNESS_DIVIDER
         )
 
         if (opacity < 0.05) continue
@@ -133,14 +105,14 @@ export default function OptimizedStarsBackground() {
 
       ctx.restore()
     },
-    [config]
+    []
   )
 
   const animate = useCallback(
     (currentTime: number) => {
       const deltaTime = currentTime - lastTimeRef.current
 
-      if (deltaTime >= config.FRAME_TIME) {
+      if (deltaTime >= STAR_CONFIG.FRAME_TIME) {
         const canvas = canvasRef.current
         const ctx = canvas?.getContext('2d')
 
@@ -152,14 +124,15 @@ export default function OptimizedStarsBackground() {
             if (star.z < 1) {
               const angle = Math.random() * Math.PI * 2
               const radius =
-                Math.random() * (config.RADIUS_MAX - config.RADIUS_MIN) +
-                config.RADIUS_MIN
-              star.z = config.Z_MAX
+                Math.random() *
+                  (STAR_CONFIG.RADIUS_MAX - STAR_CONFIG.RADIUS_MIN) +
+                STAR_CONFIG.RADIUS_MIN
+              star.z = STAR_CONFIG.Z_MAX
               star.x = Math.cos(angle) * radius
               star.y = Math.sin(angle) * radius * 0.5
               star.speed =
-                config.SPEED_MIN +
-                Math.random() * (config.SPEED_MAX - config.SPEED_MIN)
+                STAR_CONFIG.SPEED_MIN +
+                Math.random() * (STAR_CONFIG.SPEED_MAX - STAR_CONFIG.SPEED_MIN)
               star.angle = angle
               star.initialRadius = radius
             }
@@ -173,7 +146,7 @@ export default function OptimizedStarsBackground() {
 
       animationRef.current = requestAnimationFrame(animate)
     },
-    [config, render]
+    [render]
   )
 
   const handleResize = useCallback(() => {

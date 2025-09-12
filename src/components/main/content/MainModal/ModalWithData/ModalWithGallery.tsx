@@ -4,14 +4,11 @@ import '@/styles/mainlayout/card/index.scss'
 import { useLockBodyScroll } from '@/hooks/useLockBodyScroll'
 import { useMountedAnimation } from '@/hooks/useMountedAnimation'
 import CardGrid from '../advertisements/CardGrid'
-import { galleryItems, GalleryItem } from './items'
+import { galleryItems } from './items'
 import DetailedModal from '../../DetailedModal/modal'
-import { CardItemProps } from '../advertisements/CardItem'
-
-interface ModalProps {
-  isOpen: boolean
-  onClose: () => void
-}
+import { CardItemProps } from '@/interfaces'
+import { GalleryItem } from '@/interfaces'
+import { ModalProps } from '@/interfaces'
 
 const ModalWithGallery: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   const { mounted, animating } = useMountedAnimation(isOpen)

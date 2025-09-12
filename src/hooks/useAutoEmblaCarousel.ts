@@ -9,7 +9,7 @@ import {
   DIRECTION_CHANGE_PROBABILITY,
   MIN_SAME_DIRECTION_COUNT,
   MAX_SAME_DIRECTION_COUNT,
-} from '../consts'
+} from '@/consts'
 
 export const useAutoEmblaCarousel = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel(CAROUSEL_OPTIONS)

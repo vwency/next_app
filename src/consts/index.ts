@@ -1,1 +1,5 @@
 export * from './slider'
+export * from './slider_images'
+export * from './star'
+export * from '../interfaces/HeaderLayoutProps'
+export * from './HeaderLayout'
