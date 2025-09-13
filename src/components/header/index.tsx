@@ -10,8 +10,8 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({ contentRef }) => {
   const [translateY, setTranslateY] = useState(0)
   const lastScrollY = useRef(0)
   const accumulatedUpScroll = useRef(0)
-
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+
   const toggleMenu = () => setIsMenuOpen((prev) => !prev)
 
   useEffect(() => {
@@ -24,29 +24,23 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({ contentRef }) => {
       }
 
       if (diff > 0) {
+        setTranslateY(MAX_SCROLL_HIDE)
         accumulatedUpScroll.current = 0
-      } else {
+      } else if (diff < 0) {
         accumulatedUpScroll.current -= diff
+
+        if (accumulatedUpScroll.current >= SCROLL_SHOW_THRESHOLD) {
+          setTranslateY(0)
+          accumulatedUpScroll.current = 0
+        }
       }
 
-      let newTranslateY = translateY
-
-      if (diff > 0) {
-        newTranslateY += diff
-      } else if (accumulatedUpScroll.current >= SCROLL_SHOW_THRESHOLD) {
-        newTranslateY += diff
-      }
-
-      if (newTranslateY > MAX_SCROLL_HIDE) newTranslateY = MAX_SCROLL_HIDE
-      if (newTranslateY < 0) newTranslateY = 0
-
-      setTranslateY(newTranslateY)
       lastScrollY.current = currentScrollY
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [translateY, isMenuOpen])
+  }, [isMenuOpen])
 
   const translatePercent = (translateY / MAX_SCROLL_HIDE) * 100
 
