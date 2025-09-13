@@ -18,6 +18,7 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({ contentRef }) => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY
       const diff = currentScrollY - lastScrollY.current
+
       if (diff > 0 && isMenuOpen) {
         setIsMenuOpen(false)
       }
@@ -48,6 +49,15 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({ contentRef }) => {
   }, [translateY, isMenuOpen])
 
   const translatePercent = (translateY / MAX_SCROLL_HIDE) * 100
+
+  useEffect(() => {
+    if (contentRef?.current) {
+      contentRef.current.style.transform = isMenuOpen
+        ? 'translateY(200px)'
+        : 'translateY(0)'
+      contentRef.current.style.transition = 'transform 0.3s ease'
+    }
+  }, [isMenuOpen, contentRef])
 
   return (
     <div

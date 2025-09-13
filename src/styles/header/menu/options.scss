@@ -94,7 +94,9 @@
     transform: translateY(-10px);
     flex-direction: column;
     gap: 1rem;
-    background: #111;
+    background: rgb(17, 17, 17, 0.5);
+    backdrop-filter: blur(15px);
+    backdrop-filter: blur(15px);
     position: absolute;
     top: 5.67vh;
     right: -1.3vw;
