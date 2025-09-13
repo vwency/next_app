@@ -11,6 +11,7 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({ contentRef }) => {
   const lastScrollY = useRef(0)
   const accumulatedUpScroll = useRef(0)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const menuRef = useRef<HTMLDivElement>(null)
 
   const toggleMenu = () => setIsMenuOpen((prev) => !prev)
 
@@ -46,9 +47,17 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({ contentRef }) => {
 
   useEffect(() => {
     if (contentRef?.current) {
-      contentRef.current.style.transform = isMenuOpen
-        ? 'translateY(200px)'
-        : 'translateY(0)'
+      let offset = 0
+      if (isMenuOpen) {
+        const menuList = menuRef.current?.querySelector(
+          '.list-inline.active'
+        ) as HTMLElement
+        if (menuList) {
+          offset = menuList.offsetHeight
+        }
+      }
+
+      contentRef.current.style.transform = `translateY(${offset - 45}px)`
       contentRef.current.style.transition = 'transform 0.3s ease'
     }
   }, [isMenuOpen, contentRef])
@@ -62,6 +71,7 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({ contentRef }) => {
       }}
     >
       <MainMenu
+        ref={menuRef}
         contentRef={contentRef}
         isOpen={isMenuOpen}
         toggleMenu={toggleMenu}
