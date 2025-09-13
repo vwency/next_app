@@ -1,19 +1,20 @@
 import React, { useCallback, useMemo } from 'react'
 import CardItem from './CardItem'
 import '@/styles/mainlayout/card/grid.scss'
-import { CardGridProps } from '@/interfaces'
-import { CardItemProps } from '@/interfaces'
+import { CardGridProps, CardItemProps } from '@/interfaces'
 
 const CardGrid: React.FC<CardGridProps> = ({ items, onItemClick }) => {
   const handleItemClick = useCallback(
     (item: CardItemProps) => {
-      if (onItemClick) requestAnimationFrame(() => onItemClick(item))
+      if (onItemClick) {
+        requestAnimationFrame(() => onItemClick(item))
+      }
     },
     [onItemClick]
   )
 
   const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent, item: CardItemProps) => {
+    (e: React.KeyboardEvent<HTMLDivElement>, item: CardItemProps) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault()
         handleItemClick(item)
@@ -29,12 +30,12 @@ const CardGrid: React.FC<CardGridProps> = ({ items, onItemClick }) => {
       {items.map((item, index) => (
         <div
           key={`${item.image}-${item.description}-${index}`}
-          onClick={() => handleItemClick(item)}
-          onKeyDown={(e) => handleKeyDown(e, item)}
-          style={itemWrapperStyle}
           role="button"
           tabIndex={0}
           aria-label={`Открыть ${item.description}`}
+          style={itemWrapperStyle}
+          onClick={() => handleItemClick(item)}
+          onKeyDown={(e) => handleKeyDown(e, item)}
         >
           <CardItem {...item} />
         </div>
@@ -48,11 +49,13 @@ export default React.memo(
   (prev, next) =>
     prev.items.length === next.items.length &&
     prev.onItemClick === next.onItemClick &&
-    prev.items.every(
-      (item, i) =>
-        item.image === next.items[i].image &&
-        item.alt === next.items[i].alt &&
-        item.description === next.items[i].description &&
-        item.detailedDescription === next.items[i].detailedDescription
-    )
+    prev.items.every((item, i) => {
+      const nextItem = next.items[i]
+      return (
+        item.image === nextItem.image &&
+        item.alt === nextItem.alt &&
+        item.description === nextItem.description &&
+        item.detailedDescription === nextItem.detailedDescription
+      )
+    })
 )

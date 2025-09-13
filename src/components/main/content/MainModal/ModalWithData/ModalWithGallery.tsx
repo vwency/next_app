@@ -1,17 +1,20 @@
 import React, { useState, useCallback, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 import '@/styles/mainlayout/card/index.scss'
-import { useLockBodyScroll } from '@/hooks/useLockBodyScroll'
-import { useMountedAnimation } from '@/hooks/useMountedAnimation'
-import CardGrid from '../advertisements/CardGrid'
+import { useLockBodyScroll, useMountedAnimation } from '@/hooks'
+import { CardGrid } from '../advertisements'
 import { galleryItems } from './items'
 import DetailedModal from '../../DetailedModal/modal'
-import { CardItemProps } from '@/interfaces'
-import { GalleryItem } from '@/interfaces'
-import { ModalProps } from '@/interfaces'
+import { CardItemProps, GalleryItem, ModalProps } from '@/interfaces'
+
+const CLOSE_ICON_SIZE = 20
+const MODAL_CLOSE_TIMEOUT = 300
 
 const ModalWithGallery: React.FC<ModalProps> = ({ isOpen, onClose }) => {
-  const { mounted, animating } = useMountedAnimation(isOpen)
+  const { mounted, animating } = useMountedAnimation(
+    isOpen,
+    MODAL_CLOSE_TIMEOUT
+  )
   useLockBodyScroll(isOpen)
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null)
 
@@ -28,7 +31,7 @@ const ModalWithGallery: React.FC<ModalProps> = ({ isOpen, onClose }) => {
     requestAnimationFrame(() => {
       setSelectedItem({
         ...item,
-        alt: item.alt || item.description, // гарантируем, что alt не undefined
+        alt: item.alt || item.description,
       } as GalleryItem)
     })
   }, [])
@@ -45,32 +48,6 @@ const ModalWithGallery: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   const overlayClassName = useMemo(
     () => `modal__overlay ${isOpen ? 'modal--open' : 'modal--close'}`,
     [isOpen]
-  )
-
-  const titleStyle = useMemo(
-    () => ({
-      textAlign: 'center' as const,
-      marginBottom: '30px',
-    }),
-    []
-  )
-
-  const imageStyle = useMemo(
-    () => ({
-      maxWidth: '100%',
-      display: 'block' as const,
-      margin: '0 auto',
-      height: 'auto',
-      objectFit: 'contain' as const,
-    }),
-    []
-  )
-
-  const detailsStyle = useMemo(
-    () => ({
-      marginTop: '15px',
-    }),
-    []
   )
 
   if (!mounted || (!isOpen && !animating)) return null
@@ -90,7 +67,12 @@ const ModalWithGallery: React.FC<ModalProps> = ({ isOpen, onClose }) => {
           aria-label="Закрыть модальное окно"
           type="button"
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <svg
+            width={CLOSE_ICON_SIZE}
+            height={CLOSE_ICON_SIZE}
+            viewBox="0 0 24 24"
+            fill="none"
+          >
             <path
               d="M18 6L6 18M6 6L18 18"
               stroke="currentColor"
@@ -102,7 +84,7 @@ const ModalWithGallery: React.FC<ModalProps> = ({ isOpen, onClose }) => {
         </button>
 
         <main className="modal__body" onClick={handleBodyClick}>
-          <h1 id="modal-title" style={titleStyle}>
+          <h1 id="modal-title" className="modal__title">
             Галерея картинок
           </h1>
           <CardGrid
@@ -126,10 +108,10 @@ const ModalWithGallery: React.FC<ModalProps> = ({ isOpen, onClose }) => {
             alt={selectedItem.alt}
             loading="lazy"
             decoding="async"
-            style={imageStyle}
+            className="modal__image"
           />
           {selectedItem.detailedDescription && (
-            <p style={detailsStyle}>{selectedItem.detailedDescription}</p>
+            <p className="modal__details">{selectedItem.detailedDescription}</p>
           )}
         </DetailedModal>
       )}

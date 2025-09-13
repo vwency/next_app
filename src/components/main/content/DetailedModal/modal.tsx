@@ -1,7 +1,8 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useRef } from 'react'
 import { createPortal } from 'react-dom'
 import '@/styles/mainlayout/DetaliedModal/index.scss'
 import { ModalProps } from '@/interfaces'
+import { useModalClose } from '@/hooks/useModalClose'
 
 const DetailedModal: React.FC<ModalProps> = ({
   isOpen,
@@ -12,33 +13,13 @@ const DetailedModal: React.FC<ModalProps> = ({
 }) => {
   const modalRef = useRef<HTMLDivElement | null>(null)
 
-  useEffect(() => {
-    if (!isOpen) return
-
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose()
-    }
-
-    document.addEventListener('keydown', onKeyDown)
-
-    const originalOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-
-    return () => {
-      document.removeEventListener('keydown', onKeyDown)
-      document.body.style.overflow = originalOverflow
-    }
-  }, [isOpen, onClose])
+  const { handleOverlayClick } = useModalClose({ isOpen, onClose })
 
   if (!isOpen) return null
 
   const portalRoot = portalRootId
     ? (document.getElementById(portalRootId) ?? document.body)
     : document.body
-
-  const handleOverlayClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) onClose()
-  }
 
   return createPortal(
     <div

@@ -1,19 +1,12 @@
 'use client'
 
-import React, { useState, useRef, useEffect } from 'react'
+import React from 'react'
 import '@/styles/header/menu/index.scss'
 import { MainMenuProps } from '@/interfaces'
+import { useMainMenu } from '@/hooks'
 
 const MainMenu: React.FC<MainMenuProps> = ({ contentRef }) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const menuRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (menuRef.current && contentRef?.current) {
-      const menuHeight = isOpen ? menuRef.current.scrollHeight : 0
-      contentRef.current.style.marginTop = `${menuHeight + 30}px`
-    }
-  }, [isOpen, contentRef])
+  const { isOpen, toggleMenu, menuRef } = useMainMenu(contentRef)
 
   return (
     <div className="menu_wrapper no-select" ref={menuRef}>
@@ -24,7 +17,7 @@ const MainMenu: React.FC<MainMenuProps> = ({ contentRef }) => {
       <div className="menu__options">
         <button
           className={`menu-toggle ${isOpen ? 'open' : ''}`}
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={toggleMenu}
           aria-label="Toggle menu"
         >
           <span className="bar" />
