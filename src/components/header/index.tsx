@@ -11,10 +11,16 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({ contentRef }) => {
   const lastScrollY = useRef(0)
   const accumulatedUpScroll = useRef(0)
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const toggleMenu = () => setIsMenuOpen((prev) => !prev)
+
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY
       const diff = currentScrollY - lastScrollY.current
+      if (diff > 0 && isMenuOpen) {
+        setIsMenuOpen(false)
+      }
 
       if (diff > 0) {
         accumulatedUpScroll.current = 0
@@ -39,7 +45,7 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({ contentRef }) => {
 
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [translateY])
+  }, [translateY, isMenuOpen])
 
   const translatePercent = (translateY / MAX_SCROLL_HIDE) * 100
 
@@ -51,7 +57,11 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({ contentRef }) => {
         transition: 'transform 0.1s linear',
       }}
     >
-      <MainMenu contentRef={contentRef} />
+      <MainMenu
+        contentRef={contentRef}
+        isOpen={isMenuOpen}
+        toggleMenu={toggleMenu}
+      />
     </div>
   )
 }

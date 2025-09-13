@@ -1,12 +1,15 @@
 'use client'
 
-import React from 'react'
+import React, { useRef } from 'react'
 import '@/styles/header/menu/index.scss'
 import { MainMenuProps } from '@/interfaces'
-import { useMainMenu } from '@/hooks'
 
-const MainMenu: React.FC<MainMenuProps> = ({ contentRef }) => {
-  const { isOpen, toggleMenu, menuRef } = useMainMenu(contentRef)
+const MainMenu: React.FC<MainMenuProps> = ({
+  contentRef,
+  isOpen,
+  toggleMenu,
+}) => {
+  const menuRef = useRef<HTMLDivElement>(null)
 
   return (
     <div className="menu_wrapper no-select" ref={menuRef}>
