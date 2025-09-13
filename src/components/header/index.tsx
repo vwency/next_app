@@ -20,16 +20,13 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({ contentRef }) => {
       const currentScrollY = window.scrollY
       const diff = currentScrollY - lastScrollY.current
 
-      if (diff > 0 && isMenuOpen) {
-        setIsMenuOpen(false)
-      }
+      if (diff > 0 && isMenuOpen) setIsMenuOpen(false)
 
       if (diff > 0) {
         setTranslateY(MAX_SCROLL_HIDE)
         accumulatedUpScroll.current = 0
       } else if (diff < 0) {
         accumulatedUpScroll.current -= diff
-
         if (accumulatedUpScroll.current >= SCROLL_SHOW_THRESHOLD) {
           setTranslateY(0)
           accumulatedUpScroll.current = 0
@@ -47,18 +44,18 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({ contentRef }) => {
 
   useEffect(() => {
     if (contentRef?.current) {
-      let offset = 0
-      if (isMenuOpen) {
-        const menuList = menuRef.current?.querySelector(
-          '.list-inline.active'
-        ) as HTMLElement
-        if (menuList) {
-          offset = menuList.offsetHeight
+      requestAnimationFrame(() => {
+        let offset = 0
+        if (isMenuOpen) {
+          const menuList = menuRef.current?.querySelector(
+            '.list-inline.active'
+          ) as HTMLElement
+          if (menuList) offset = menuList.offsetHeight
         }
-      }
 
-      contentRef.current.style.transform = `translateY(${offset - 45}px)`
-      contentRef.current.style.transition = 'transform 0.3s ease'
+        contentRef.current!.style.transform = `translateY(${offset}px)`
+        contentRef.current!.style.transition = 'transform 0.3s ease'
+      })
     }
   }, [isMenuOpen, contentRef])
 
@@ -68,6 +65,11 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({ contentRef }) => {
       style={{
         transform: `translateY(-${translatePercent}%)`,
         transition: 'transform 0.1s linear',
+        position: 'fixed', // ключевой момент
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 1000,
       }}
     >
       <MainMenu
