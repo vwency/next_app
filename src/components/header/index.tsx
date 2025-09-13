@@ -10,9 +10,8 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({ contentRef }) => {
   const [translateY, setTranslateY] = useState(0)
   const lastScrollY = useRef(0)
   const accumulatedUpScroll = useRef(0)
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const menuRef = useRef<HTMLDivElement>(null)
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const toggleMenu = () => setIsMenuOpen((prev) => !prev)
 
   useEffect(() => {
@@ -20,44 +19,52 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({ contentRef }) => {
       const currentScrollY = window.scrollY
       const diff = currentScrollY - lastScrollY.current
 
-      if (diff > 0 && isMenuOpen) setIsMenuOpen(false)
-
-      if (diff > 0) {
-        setTranslateY(MAX_SCROLL_HIDE)
-        accumulatedUpScroll.current = 0
-      } else if (diff < 0) {
-        accumulatedUpScroll.current -= diff
-        if (accumulatedUpScroll.current >= SCROLL_SHOW_THRESHOLD) {
-          setTranslateY(0)
-          accumulatedUpScroll.current = 0
-        }
+      if (diff > 0 && isMenuOpen) {
+        setIsMenuOpen(false)
       }
 
+      if (diff > 0) {
+        accumulatedUpScroll.current = 0
+      } else {
+        accumulatedUpScroll.current -= diff
+      }
+
+      let newTranslateY = translateY
+
+      if (diff > 0) {
+        newTranslateY += diff
+      } else if (accumulatedUpScroll.current >= SCROLL_SHOW_THRESHOLD) {
+        newTranslateY += diff
+      }
+
+      if (newTranslateY > MAX_SCROLL_HIDE) newTranslateY = MAX_SCROLL_HIDE
+      if (newTranslateY < 0) newTranslateY = 0
+
+      setTranslateY(newTranslateY)
       lastScrollY.current = currentScrollY
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [isMenuOpen])
+  }, [translateY, isMenuOpen])
 
   const translatePercent = (translateY / MAX_SCROLL_HIDE) * 100
 
-  useEffect(() => {
-    if (contentRef?.current) {
-      requestAnimationFrame(() => {
-        let offset = 0
-        if (isMenuOpen) {
-          const menuList = menuRef.current?.querySelector(
-            '.list-inline.active'
-          ) as HTMLElement
-          if (menuList) offset = menuList.offsetHeight
-        }
+  const [menuHeight, setMenuHeight] = useState(0)
+  const menuRef = useRef<HTMLDivElement>(null)
 
-        contentRef.current!.style.transform = `translateY(${offset}px)`
-        contentRef.current!.style.transition = 'transform 0.3s ease'
-      })
+  useEffect(() => {
+    if (menuRef.current) {
+      setMenuHeight(menuRef.current.getBoundingClientRect().height)
     }
-  }, [isMenuOpen, contentRef])
+
+    if (contentRef?.current) {
+      contentRef.current.style.transform = isMenuOpen
+        ? `translateY(${menuHeight + 60}px)`
+        : 'translateY(0)'
+      contentRef.current.style.transition = 'transform 0.3s ease'
+    }
+  }, [isMenuOpen, contentRef, menuHeight])
 
   return (
     <div
@@ -65,11 +72,6 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({ contentRef }) => {
       style={{
         transform: `translateY(-${translatePercent}%)`,
         transition: 'transform 0.1s linear',
-        position: 'fixed', // ключевой момент
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 1000,
       }}
     >
       <MainMenu

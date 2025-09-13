@@ -1,10 +1,10 @@
 import React from 'react'
 import '@/styles/mainlayout/index.scss'
-import MainTextHead from './text_head/main'
-import MainText from './text_main/main'
+import MainTextHead from './texts/text_head/main'
+import MainText from './texts/text_main/main'
 import { MainButtons } from './buttons'
 import MainSlider from './slider/main'
-import MainFooterText from './text_footer/main'
+import MainFooterText from './texts/text_footer/main'
 
 const MainLayout = () => {
   return (
