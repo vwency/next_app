@@ -6,7 +6,7 @@ interface UseCardItemHoverProps {
 }
 
 const DESCRIPTION_HEIGHT_REM = 3.2
-const DETAILED_PADDING_REM = 1.02
+const DETAILED_PADDING_REM = 0.5
 
 let resizeTimeout: NodeJS.Timeout | null = null
 

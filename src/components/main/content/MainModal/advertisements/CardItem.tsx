@@ -1,4 +1,5 @@
-import React, { useRef, useMemo, useCallback } from 'react'
+'use client'
+import React, { useRef, useMemo, useCallback, useState, useEffect } from 'react'
 import '@/styles/mainlayout/card/items.scss'
 import { useCardItemHover } from '@/hooks'
 import { CardItemProps } from '@/interfaces'
@@ -20,10 +21,13 @@ const CardItem: React.FC<CardItemProps> = ({
     calculateExpandedHeight,
   } = useCardItemHover({ detailedDescription, imageRef })
 
-  const supportsHover = useMemo(
-    () => window.matchMedia('(hover: hover)').matches,
-    []
-  )
+  const [supportsHover, setSupportsHover] = useState(false)
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.matchMedia) {
+      setSupportsHover(window.matchMedia('(hover: hover)').matches)
+    }
+  }, [])
 
   const heights = useMemo(() => {
     const base = calculateBaseHeight()

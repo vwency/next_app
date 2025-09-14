@@ -15,7 +15,6 @@ const MainLayout = () => {
       <MainFooterText />
       <MainSlider />
       <MainButtons />
-      <GallertNoModal />
     </div>
   )
 }
