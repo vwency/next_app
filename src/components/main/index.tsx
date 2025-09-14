@@ -5,6 +5,7 @@ import MainText from './texts/text_main/main'
 import { MainButtons } from './buttons'
 import MainSlider from './slider/main'
 import MainFooterText from './texts/text_footer/main'
+import GallertNoModal from './content/MainModal/ModalWithData/NonModal'
 
 const MainLayout = () => {
   return (
@@ -14,6 +15,7 @@ const MainLayout = () => {
       <MainFooterText />
       <MainSlider />
       <MainButtons />
+      <GallertNoModal />
     </div>
   )
 }
