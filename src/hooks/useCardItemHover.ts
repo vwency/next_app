@@ -30,6 +30,12 @@ export const useCardItemHover = ({
       return (rem: number) => rem * heightCache.current.remToPx!
     }
 
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+      const fallback = 16
+      heightCache.current.remToPx = fallback
+      return (rem: number) => rem * fallback
+    }
+
     const rootFontSize = parseFloat(
       getComputedStyle(document.documentElement).fontSize
     )
@@ -39,6 +45,7 @@ export const useCardItemHover = ({
   }, [])
 
   const supportsHover = useMemo(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return false
     return window.matchMedia('(hover: hover)').matches
   }, [])
 
@@ -109,6 +116,8 @@ export const useCardItemHover = ({
   }, [measureHeights])
 
   useEffect(() => {
+    if (typeof window === 'undefined') return
+
     measureHeights()
     window.addEventListener('resize', handleResize, { passive: true })
 
@@ -132,6 +141,7 @@ export const useCardItemHover = ({
   const setIsHoveredOptimized = useCallback(
     (hovered: boolean) => {
       if (!supportsHover && hovered) return
+      if (typeof window === 'undefined') return
       requestAnimationFrame(() => {
         setIsHovered(hovered)
       })
